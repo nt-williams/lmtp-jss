@@ -1,0 +1,516 @@
+\documentclass[
+]{jss}
+
+\usepackage[utf8]{inputenc}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\author{
+Nicholas Williams, MPH\\Weill Cornell Medicine \And Ivan Diaz,
+PhD\\Weill Cornell Medicine
+}
+\title{\pkg{lmtp}: An \proglang{R} Package for Non-Parametric Causal
+Effects Based on Modified Treatment Policies}
+
+\Plainauthor{Nicholas Williams, MPH, Ivan Diaz, PhD}
+\Plaintitle{lmtp: An R Package for Non-Parametric Causal Effects Based
+on Modified Treatment Policies}
+\Shorttitle{\pkg{lmtp}: Causal Effects Based on Modified Treatment
+Policies}
+
+\Abstract{
+The majority of causal inference methods consider treatment effects
+based on counterfactual outcomes where exposure is deterministically
+established. When exposure is continuous, deterministic treatment
+effects may be irrelevant and impossible to bring about. As a solution,
+modified treatment policies offer a non-parametric alternative to
+deterministic treatment effects that allow for the study of feasible
+interventions and offer a safegaurd against positivity violations. The
+\pkg{lmtp} package implements the estimators of
+\citet{diazNonparametricCausalEffects2020a} for estimating causal
+effects based on non-parametric modified treatment policies in \code{R}.
+The provided methods can be applied to both point-treatment and
+longitudinal settings, and can account for time-varying exposure,
+covariates, and right censoring. Additionally, two of the provided
+estimators can incorporate flexible data-adaptive algorithms for
+estimation while maintaining valid statistical inference.
+}
+
+\Keywords{causal inference, non-parametric, modified treatment
+policies, \proglang{R}}
+\Plainkeywords{causal inference, non-parametric, modified treatment
+policies, R}
+
+%% publication information
+%% \Volume{50}
+%% \Issue{9}
+%% \Month{June}
+%% \Year{2012}
+%% \Submitdate{}
+%% \Acceptdate{2012-06-04}
+
+\Address{
+    Nicholas Williams, MPH\\
+  Weill Cornell Medicine\\
+  402 East 67th Street, New York, NY 10065\\
+  E-mail: \email{niw4001@med.cornell.edu}\\
+  
+    }
+
+
+% Pandoc header
+
+\usepackage{amsmath}
+
+\begin{document}
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+Most modern causal inference methods consider the effects of a exposure
+on a population mean outcome under interventions that set the treatment
+value deterministically. For example, the average treatment effect (ATE)
+considers the hypothetical difference in a population mean outcome if a
+binary exposure was applied to all observations versus if it was applied
+to no observations. In the case of a categorical or continuous exposure,
+it is unlikely any policy could bring this about. In addition, the
+estimation of causal effects requires the so called positivity
+assumption which states that all observations have a greater than zero
+chance of experiencing the exposure levels
+\citep{rosenbaumCentralRolePropensity1983}. This assumption is often
+violated when evaluating the effects of deterministic interventions and
+is usually exacerbated with longitudinal data.
+
+First introduced by \citet{haneuseEstimationEffectInterventions2013},
+and building off work by \citet{munozPopulationInterventionCausal2012},
+modified treatment policies (MTPs) are stochastic treatment regimes that
+can be formulated to avoid violations of the positivity assumption.
+\citet{diazNonparametricCausalEffects2020a} later extended MTPs to the
+longitudinal setting with time-varying treatment, covariates, and
+right-censoring of the outcome.
+
+The package \pkg{lmtp} implements four methods for estimating the
+effects of MTPs. Two of these estimators, a targeted minimum-loss based
+estimator (TMLE) and a sequentially doubly-robust estimator (SDR), are
+multiply-robust
+\citep{laanTargetedLearningCausal2011a, laanTargetedMaximumLikelihood2006}
+(NEED TO FIND CITATIONS FOR SDR). In addition to MTPs, the package
+naturally allows for estimation of the ATE, causal risk ratio, and
+causal odds ratio and can thus be used for a variety of causal inference
+problems. In this article we describe how \pkg{lmtp} can be used for
+estimating the causal effects of MTPs and both static and dynamic
+deterministic treatment effects. The package may be download from CRAN
+at \url{cran.r-project.org/package=lmtp}.
+
+\hypertarget{notation-and-modified-treatment-policies}{%
+\section{Notation and modified treatment
+policies}\label{notation-and-modified-treatment-policies}}
+
+\hypertarget{data-structure}{%
+\subsection{Data structure}\label{data-structure}}
+
+In this article, we will use the notation of
+\citet{diazNonparametricCausalEffects2020a} with slight modification.
+Let \(i\) be the index of an observation from a data set with \(n\)
+total units and \(t\) be the index of time for a total time of \(\tau\).
+The observed data for observation \(Z_i\) may be denoted as
+
+\begin{equation}
+Z_i = (W, L_1, A_1, L_2, A_2, ..., L_{\tau}, A_{\tau}, Y_{\tau + 1}) 
+\end{equation}
+
+where \(W\) denotes baseline covariates, \(L_t\) denotes time-varying
+covariates, \(A_t\) denotes a vector of exposure variables and \(Y\)
+denotes an outcome at the end of study follow-up. We observe \(n\)
+i.i.d. copies of \(Z\) with distribution \(\Prob\). If right-censoring
+exists, \(A_t\) can be adapted so that \(A_t = (A_{1, t}, A_{2, t})\)
+where \(A_{1, t}\) equals one if an observation is still in the study at
+time \(t\) and zero otherwise, and \(A_{2, t}\) denotes the exposure at
+time \(t\). We use an overbar to indicate the history of a variable up
+until time \(t\) and an underbar to denote the future of a variable. We
+then use \(H_t = (\bar{L}_t, \bar{A}_{t-1})\) to denote the history of
+all variables up until just before \(A_t\).
+
+\hypertarget{modified-treatment-policies}{%
+\subsection{Modified treatment
+policies}\label{modified-treatment-policies}}
+
+To formally define our causal effects of interest using our established
+data structure we will use the potential outcomes framework. We consider
+a hypothetical policy where in which \(\bar{A}\) is set to a
+hypothetical regime \(d\) defined as \(A^{d}_t = d_t(A_t, H^{d}_t)\),
+where \(H^{d}_t = (\bar{L}_t, \bar{A}^{d}_t - 1)\), for a set of
+user-given regimes \(d_t:t \in \{1, ..., \tau\}\). The defining
+characteristic that makes regime \(d_t\) a modified treatment policy is
+that it depends on the \emph{natural value} of \(\bar{A}_t\) and
+\(\bar{L}_t\).
+
+Formally, consider a longitudinal study with loss-to-follow-up. Let
+\(A_t = (A_{1, t}, A_{2, t})\) where \(A_{1, t}\) equals one if an
+observation is still in the study at time \(t\) and zero otherwise, and
+\(A_{2, t}\) denote a continuous exposure at time \(t\) that can be
+changed through some intervention. A modified treatment policy that
+decreases \(A_t\) is then
+
+\begin{equation}
+d_t(a_t,h_t)=
+\begin{cases}
+(1, a_{2,t} - \delta_t) & \text{if } a_{2,t} > u_t(h_t) + \delta_t \\
+(1, a_{2,t}) & \text{if } a_{2,t} \leq u_t(h_t) + \delta_t
+\end{cases}
+\end{equation}
+
+where \(0 < \delta_t < u_t(h_t)\) is a user-defined value and \(A_t\) is
+supported in the data. Notice that the hypothetical exposure after
+intervention, \(A^{d}_t\) depends on the actually observed exposure,
+\(A_t\). This is in contrast to a deterministic intervention where
+\(A^{d}_t\) would be set to a user-defined value with probability one.
+If right-censoring did not exist in the data, the MTP \(d\) would
+simplify to removing \(A_{1, t}\) from the MTP definition. In analogue
+to \citet{diazNonparametricCausalEffects2020a}, in this article we will
+focus on estimating the the causal effect of MTP \(d\) on outcome \(Y\),
+using \pkg{lmtp}, through the causal parameter
+
+\begin{equation}
+\theta = \E\{Y(A^d)\}\text{,}
+\end{equation}
+
+where \(Y(A^d)\) is the potential outcome in a world, contrary to fact,
+where \(\bar{A}\) was modified according to the MTP \(d\). When \(Y\) is
+continuous, \(\theta\) is the mean population value of \(Y\) under MTP
+\(d\); when \(Y\) is dichotomous, \(\theta\) is the population
+proportion of event \(Y\) under MTP \(d\). Similarly, when \(Y\) is a
+survival outcome, \(\theta\) is defined as the cumulative incidence of
+\(Y\) under MTP \(d\).
+
+\hypertarget{identification}{%
+\subsection{Identification}\label{identification}}
+
+Causal interpretation of \(\theta\) requires identifying an expression
+of \(\theta\) as a function of the data generating distribution
+\(\Prob\) using only the observed data \(Z\). A full review of these
+identification assumptions is outside the scope of this article.
+Briefly, the following standard assumptions must hold
+
+\newtheorem{assumption}{Assumption}
+
+\begin{assumption}[Consistency]
+\(\bar{A} = \bar{a} \implies Y = Y(\bar{a})\) for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$ 
+\end{assumption}
+\begin{assumption}[Exchangeability]
+If $(a_t, h_t) \in \mathop{\mathrm{supp}}\{A_t, H_t\}$ then $(d(a_t, h_t), h_t) \in \mathop{\mathrm{supp}}\{A_t, H_t\}$ for $t \in \{1, ..., \tau \}$
+\end{assumption}
+\begin{assumption}[Positivity]
+$A_t \perp \!\!\! \perp Y(\bar{a}) | H_t$ for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$ and $t \in \{1, ..., \tau\}$
+\end{assumption}
+
+The consistency assumption states that the potential outcome for an
+observation under their exposure that we observed is the value of the
+outcome that we did actually observe. Assumption 2, the exchangeability
+assumption is often also referred to as the no-unmeasured confounding
+assumption; it is satisfied if all common causes of the exposure and
+outcome are measured and adjusted for. Of particular importance to this
+article is the positivity assumption which states that distribution of
+the exposure under the MTP is supported in the data. In a study with a
+continuous exposure and loss-to-follow-up, the positivity assumption
+states that if an observation with covariate history \(h_t\) and
+exposure \(a_t\) who was not lost-to-follow-up at time \(t\) exists then
+there is also an observation with covariate history \(h_t\) who was not
+lost-to-follow-up at time \(t\) but whose exposure was observed as
+\(d(a_t, h_t)\) that also exists. The strength of MTPs is that they may
+be formulated so as to avoid violations of the positivity assumption
+which is often violated when evaluating continuous exposures.
+
+\hypertarget{estimating-modified-treatment-policy-effects}{%
+\section{Estimating modified treatment policy
+effects}\label{estimating-modified-treatment-policy-effects}}
+
+\hypertarget{a-users-guide}{%
+\subsection{A user's guide}\label{a-users-guide}}
+
+\hypertarget{estimation-methods}{%
+\subsubsection{Estimation methods}\label{estimation-methods}}
+
+The \pkg{lmtp} package provides four estimation methods: a targeted
+minimum-loss based estimator (TMLE), a sequentially doubly-robust
+estimator (SDR), an estimator based on the G-formula, and an inverse
+probability weighted (IPW) estimator. We will only describe the use of
+the TMLE, \code{lmtp_tmle}, and SDR, \code{lmtp_sdr}, estimators as
+their use is \textit{strongly} suggested over the G-computation based
+and IPW estimators.
+
+Discuss the difference between TMLE and SDR estimators and when one may
+have an advantage over the other. All examples in this article will use
+both the TMLE and SDR estimators.
+
+\hypertarget{required-data-structure}{%
+\subsubsection{Required data structure}\label{required-data-structure}}
+
+Data is passed to \pkg{lmtp} estimators through the \code{data}
+argument. Data should be in wide format with one column per variable per
+time point under study (i.e., there should be one column for every
+variable in \(Z\)). These columns do not have to be in any specific
+order and the data set may contain variables that won't be used in
+estimation. The names of treatment variables, censoring variables,
+baseline covariates, and time-varying covariates are specified using the
+\code{trt}, \code{cens}, \code{baseline}, and \code{time_vary} arguments
+respectively. The \code{trt}, \code{cens}, and \code{baseline} arguments
+accept character vectors and the \code{trt} and \code{cens} arguments
+should be ordered according to the time-ordering of the data generating
+mechanism. The \code{time_vary} argument accepts an unnamed list ordered
+according to the time-ordering of the model with each index containing
+the name of the time-varying covariates for the given time. The outcome
+variable is specified through the \code{outcome} argument.
+
+The provided estimators can work with dichotomous, continuous, or
+survival outcomes. In the case of a dichotomous or continuous outcome,
+only a single variable name should be passed to the \code{outcome}
+argument. For survival outcomes, a vector containing the names of the
+intermediate outcome and final outcome variables ordered according to
+time should be passed to the \code{outcome} argument. Dichotomous and
+survival outcomes should be coded using zero's and one's where one
+indicates the occurrence of an event and zero otherwise. The
+\code{outcome_type} argument should be set to \code{"continuous"} for
+continuous outcomes and \code{"binomial"} for dichotomous and survival
+outcomes. If missingness is present in the outcome variable, the
+\code{cens} argument must be provided. Censoring indicators should be
+coded using zero's and one's where one indicates an observation is
+observed at the next time and zero indicates loss-to-follow-up. Once an
+observation's censoring status is switched to zero it cannot change back
+to one. Missing data before an observation is lost-to-follow-up is not
+allowed.
+
+The \code{k} argument controls a Markov assumption of the data. With
+\code{k = Inf}, the entire history \(H_t\) will be used for estimation
+at time \(t\) while \code{k = 0} will restrict the set of variables in
+\(H_t\) used for estimation to those at \(t - 1\). The user can inspect
+how estimators will internally use the provided variables during
+estimation with the \code{create_node_list} function. The
+\code{create_node_list} function uses the same \code{trt},
+\code{baseline}, \code{time_vary}, and \code{k} arguments as \pkg{lmtp}
+estimators and is used internally to create a ``node list'' that encodes
+which variables should be used at each time point of estimation. For
+example, consider a study with the observed data structure
+
+\begin{equation}
+Z = (W_1, W_2, L_{1, 1}, L_{1, 2}, A_1, L_{2, 1}, L_{2, 2}, A_2, Y_3)
+\end{equation}
+
+We can specify this data structure with
+
+\begin{CodeChunk}
+
+\begin{CodeInput}
+R> baseline <- c("W_1", "W_2")
+R> trt <- c("A_1", "A_2")
+R> time_vary <- list(c("L_11", "L_12"), 
+R+                   c("L_21", "L_22"))
+R> create_node_list(trt = trt, baseline = baseline, 
+R+                  time_vary = time_vary, tau = 2)
+\end{CodeInput}
+
+\begin{CodeOutput}
+$trt
+$trt[[1]]
+[1] "W_1"  "W_2"  "L_11" "L_12" "A_1" 
+
+$trt[[2]]
+[1] "W_1"  "W_2"  "L_11" "L_12" "L_21" "L_22" "A_1"  "A_2" 
+
+
+$outcome
+$outcome[[1]]
+[1] "W_1"  "W_2"  "L_11" "L_12" "A_1" 
+
+$outcome[[2]]
+[1] "W_1"  "W_2"  "L_11" "L_12" "A_1"  "L_21" "L_22" "A_2" 
+\end{CodeOutput}
+\end{CodeChunk}
+
+For this data structure, \code{create_node_list} returns a list of lists
+of the names of the variables in \(H_t\) to be used for estimation for
+both the outcome regression and the propensity at every time \(t\).
+Notice that variables \(A_1\) and \(A_2\) are included for their own
+estimation. The \pkg{lmtp} package recasts the density ratio nuisance
+parameter estimation into a classification problem based on a \(2n\)
+observations augmented data set where an indicator variable \(\Lambda\)
+is used as a pseudo outcome
+\citep{chengSemiparametricDensityEstimation2004, qinInferencesCaseControlSemiparametric1998}.
+Under the augmented data set, the data structure at time \(t\) is
+redefined as
+
+\begin{equation}
+(H_{\lambda, i, t}, A_{\lambda, i, t}, \Lambda_{\lambda, i} : \lambda = 0, 1; i = 1, ..., n)
+\end{equation}
+
+where \(\Lambda_{\lambda, i} = \lambda_i\) indexes the duplicate values.
+For all duplicated observations \(i \in \{1, ..., 2n\}\),
+\(H_{\lambda, i, t}\) is the same. While, for \(i \in \{1, ..., n\}\)
+duplicated observations \(A_{0, i, t}\) are the observed exposure values
+and \(A_{1, i, t}\) for \(i \in \{n+1, ..., 2n\}\) are the exposure
+values under the MTP \(d\), \(A^{d}_t\).
+
+\hypertarget{coding-modified-treatment-policies}{%
+\subsubsection{Coding modified treatment
+policies}\label{coding-modified-treatment-policies}}
+
+Treatment policies are specified using the \code{shift} argument, which
+takes a user-defined function that returns a vector of exposure values
+according the policy of interest. Shift functions should take two
+arguments, the first for specifying a data set and the second for
+specifying the current exposure variable. For example, a possible MTP
+may increase exposure by 2 units if the natural exposure value was below
+5 units and do nothing otherwise. A shift function for this MTP would
+look like
+
+\code{
+function(data, trt) \{ \\
+\-\ (data[[trt]] < 5)*(data[[trt]] + 2) + (data[[trt]] >= 5)*data[[trt]] \\
+\}
+}
+
+This framework is flexible and allows for specifying complex treatment
+regimes that can also depend on time and covariates. In the case of a
+binary exposure, two pre-specified shift functions are installed with
+the package: \code{static_binary_on} which sets \(A_{i, t} = 1\), and
+\code{static_binary_off} which sets \(A_{i, t} = 0\).
+
+\hypertarget{the-estimation-engine}{%
+\subsubsection{The estimation engine}\label{the-estimation-engine}}
+
+An attractive property of multiply-robust estimators is that they can
+incorporate flexible machine-learning algorithms for the estimation of
+nuisance parameters while remaining \(\sqrt{n}\)-consistent. The super
+learner algorithm is an ensemble learner than incorporates a set of
+candidate models through a weighted convex-combination based on
+cross-validation \citep{laanSuperLearner2007}. Asymptotically, this
+weighted combination of models, called the meta-learner, will outperform
+any single model included within it.
+
+Access to the super learner is provided by the \pkg{sl3} package. To use
+the super learner, analysts must create \pkg{sl3} learner stacks which
+are then included in estimator calls with the \code{lrnrs_trt} and
+\code{lrnrs_outcome} arguments. The outcome variable type should guide
+users on selecting the appropriate candidate learners for use with the
+\code{lrnrs_outcome} argument. Regardless of whether an exposure is
+continuous, dichotomous, or categorical, the exposure mechanism is
+estimated using classification, users should thus only include candidate
+learners capable of binary classification with the \code{lrnrs_trt}
+argument.
+
+Discuss that candidate learners which use cross-validation should accept
+an id argument for \code{lrnrs_trt}.
+
+User's may install \pkg{sl3} from \url{https://github.com/tlverse/sl3}.
+Because \pkg{sl3} is not available for installation from a standard
+repository, \pkg{sl3} is not required to use \pkg{lmtp}. Instead, users
+may specify the \code{lrnrs_trt} and \code{lrnrs_outcomes} arguments as
+\code{NULL} and nuisance parameters will be estimated using a
+generalized linear model (GLM) with the \code{glm} function from the
+\pkg{stats} package.
+
+\hypertarget{additionally-arguments}{%
+\subsubsection{Additionally arguments}\label{additionally-arguments}}
+
+\begin{itemize}
+\tightlist
+\item
+  Discuss \code{id}, \code{folds}, and \code{bound}
+\end{itemize}
+
+\hypertarget{effect-contrasts}{%
+\subsubsection{Effect contrasts}\label{effect-contrasts}}
+
+\hypertarget{example-1-longitudinal-mtp-with-no-loss-to-follow-up}{%
+\subsubsection{Example 1: Longitudinal MTP with no
+loss-to-follow-up}\label{example-1-longitudinal-mtp-with-no-loss-to-follow-up}}
+
+We have simulated data on \(n = 5000\) observations over a 5-month
+period. Each observation has a continuous exposure (\code{A_1},
+\code{A_2}, \code{A_3}, \code{A_4}) and covariate (\code{L_1},
+\code{L_2}, \code{L_3}, \code{L_4}) recorded at months one through four
+and a dichotomous outcome (\code{Y}) at month five. We assume no
+loss-to-follow-up and no Markov property. This data set is installed
+with the package and is stored in the object \code{sim_t4}.
+
+For this example, we are interested in the effect of a longitudinal MTP
+where at each month an observation's exposure decreases by one only if
+their observed exposure wouldn't be less than one if modified. Our data
+structure has no baseline confounders and we will use only GLMs for
+estimation so the only objects we must specify are the treatment
+variables, the time-varying covariates, the outcome variable, and the
+MTP shift function.
+
+\begin{CodeChunk}
+
+\begin{CodeInput}
+R> trt <- c("A_1", "A_2", "A_3", "A_4")
+R> time_vary <- list(c("L_1"), c("L_2"), c("L_3"), c("L_4"))
+R> y <- "Y"
+R> shift <- function(data, trt) {
+R+   (data[[trt]] - 1) * (data[[trt]] - 1 >= 1) + 
+R+     data[[trt]] * (data[[trt]] - 1 < 1)
+R+ }
+R> 
+R> lmtp_tmle(sim_t4, trt, y, time_vary = time_vary, shift = shift)
+\end{CodeInput}
+
+\begin{CodeOutput}
+LMTP Estimator: TMLE
+   Trt. Policy: (shift)
+
+Population intervention effect
+      Estimate: 0.2646
+    Std. error: 0.019
+        95% CI: (0.2274, 0.3019)
+\end{CodeOutput}
+
+\begin{CodeInput}
+R> lmtp_sdr(sim_t4, trt, y, time_vary = time_vary, shift = shift)
+\end{CodeInput}
+
+\begin{CodeOutput}
+LMTP Estimator: SDR
+   Trt. Policy: (shift)
+
+Population intervention effect
+      Estimate: 0.2608
+    Std. error: 0.021
+        95% CI: (0.2196, 0.3019)
+\end{CodeOutput}
+
+\end{CodeChunk}
+
+\hypertarget{example-2-longitudinal-mtp-right-censoring-and-the-super-learner}{%
+\subsubsection{Example 2: Longitudinal MTP, right-censoring, and the
+super
+learner}\label{example-2-longitudinal-mtp-right-censoring-and-the-super-learner}}
+
+Observational data is often accompanied with loss-to-follow-up. For this
+example, we have a simulated dataset of \(n = 1000\) observations. Data
+was simulated for three time points with a continuous time-varying
+exposure at times \(t \in \{1, 2\}\) (\code{A1}, \code{A2}), a
+dichotomous time-varying covariate at times \(t \in \{1, 2\}\)
+(\code{L1}, \code{L2}), and a dichotomous outcome (\code{Y}) at time
+\(t = 3\). Loss-to-follow-up is present after time \(t = 1\) so the data
+contains censoring indicators (\code{C1}, \code{C2}). This data set is
+installed with the package and is stored in the object \code{sim_cens}.
+
+Suppose we are interested in the additive effect of a MTP where exposure
+is increased by 0.5 at every time point for all observations.
+
+\hypertarget{example-3}{%
+\subsubsection{Example 3:}\label{example-3}}
+
+\hypertarget{extra-features}{%
+\subsubsection{Extra features}\label{extra-features}}
+
+\hypertarget{reference-manual}{%
+\section{Reference Manual}\label{reference-manual}}
+
+\renewcommand\refname{References}
+\bibliography{lmtp-paper.bib}
+
+
+\end{document}
