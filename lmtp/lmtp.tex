@@ -1,5 +1,4 @@
-\documentclass[
-]{jss}
+\documentclass[]{jss}
 
 \usepackage[utf8]{inputenc}
 
@@ -51,13 +50,13 @@ policies, R}
 %% \Acceptdate{2012-06-04}
 
 \Address{
-    Nicholas Williams, MPH\\
+  Nicholas Williams, MPH\\
+  Division of Biostatistics\\
+  Department of Population Health Sciences\\ 
   Weill Cornell Medicine\\
   402 East 67th Street, New York, NY 10065\\
   E-mail: \email{niw4001@med.cornell.edu}\\
-  
-    }
-
+}
 
 % Pandoc header
 
@@ -123,7 +122,8 @@ Z_i = (W, L_1, A_1, L_2, A_2, ..., L_{\tau}, A_{\tau}, Y_{\tau + 1})
 where \(W\) denotes baseline covariates, \(L_t\) denotes time-varying
 covariates, \(A_t\) denotes a vector of exposure variables and \(Y\)
 denotes an outcome at the end of study follow-up. We observe \(n\)
-i.i.d. copies of \(Z\) with distribution \(\Prob\). If right-censoring
+i.i.d. copies of \(Z\) with distribution \(\Prob\). We use \(A_t = a_t\) to
+denote a realization of a random variable. If right-censoring
 exists, \(A_t\) can be adapted so that \(A_t = (A_{1, t}, A_{2, t})\)
 where \(A_{1, t}\) equals one if an observation is still in the study at
 time \(t\) and zero otherwise, and \(A_{2, t}\) denotes the exposure at
@@ -238,7 +238,7 @@ estimator (SDR), an estimator based on the G-formula, and an inverse
 probability weighted (IPW) estimator. We will only describe the use of
 the TMLE, \code{lmtp_tmle}, and SDR, \code{lmtp_sdr}, estimators as
 their use is \textit{strongly} suggested over the G-computation based
-and IPW estimators.
+and IPW methods.
 
 Discuss the difference between TMLE and SDR estimators and when one may
 have an advantage over the other. All examples in this article will use
@@ -284,7 +284,8 @@ allowed.
 The \code{k} argument controls a Markov assumption of the data. With
 \code{k = Inf}, the entire history \(H_t\) will be used for estimation
 at time \(t\) while \code{k = 0} will restrict the set of variables in
-\(H_t\) used for estimation to those at \(t - 1\). The user can inspect
+\(H_t\) used for estimation to time-varying covariates at time \(t - 1\). 
+Baseline confounders are always included in estimation. The user can inspect
 how estimators will internally use the provided variables during
 estimation with the \code{create_node_list} function. The
 \code{create_node_list} function uses the same \code{trt},
@@ -337,7 +338,7 @@ parameter estimation into a classification problem based on a \(2n\)
 observations augmented data set where an indicator variable \(\Lambda\)
 is used as a pseudo outcome
 \citep{chengSemiparametricDensityEstimation2004, qinInferencesCaseControlSemiparametric1998}.
-Under the augmented data set, the data structure at time \(t\) is
+In the augmented data set, the data structure at time \(t\) is
 redefined as
 
 \begin{equation}
@@ -364,15 +365,19 @@ may increase exposure by 2 units if the natural exposure value was below
 5 units and do nothing otherwise. A shift function for this MTP would
 look like
 
-\code{
-function(data, trt) \{ \\
-\-\ (data[[trt]] < 5)*(data[[trt]] + 2) + (data[[trt]] >= 5)*data[[trt]] \\
-\}
-}
+\begin{CodeChunk}
+
+\begin{CodeInput}
+R> function(data, trt) {
+R+  (data[[trt]] < 5)*(data[[trt]] + 2) + (data[[trt]] >= 5)*data[[trt]]
+R+ }
+\end{CodeInput}
+
+\end{CodeChunk}
 
 This framework is flexible and allows for specifying complex treatment
 regimes that can also depend on time and covariates. In the case of a
-binary exposure, two pre-specified shift functions are installed with
+binary exposure, two shift functions are installed with
 the package: \code{static_binary_on} which sets \(A_{i, t} = 1\), and
 \code{static_binary_off} which sets \(A_{i, t} = 0\).
 
@@ -386,7 +391,7 @@ learner algorithm is an ensemble learner than incorporates a set of
 candidate models through a weighted convex-combination based on
 cross-validation \citep{laanSuperLearner2007}. Asymptotically, this
 weighted combination of models, called the meta-learner, will outperform
-any single model included within it.
+any single one of its components.
 
 Access to the super learner is provided by the \pkg{sl3} package. To use
 the super learner, analysts must create \pkg{sl3} learner stacks which
@@ -399,13 +404,15 @@ estimated using classification, users should thus only include candidate
 learners capable of binary classification with the \code{lrnrs_trt}
 argument.
 
-Discuss that candidate learners which use cross-validation should accept
-an id argument for \code{lrnrs_trt}.
+Candidate learners specified with \code{lrnrs_trt} that rely on cross-validation
+for the tuning of hyper-parameters should support grouped data. Because
+estimation of the treatment mechanism relies on the augmented \(2n\) duplicated
+data set, duplicated observations must be put into the same fold during sample-splitting. 
 
 User's may install \pkg{sl3} from \url{https://github.com/tlverse/sl3}.
 Because \pkg{sl3} is not available for installation from a standard
-repository, \pkg{sl3} is not required to use \pkg{lmtp}. Instead, users
-may specify the \code{lrnrs_trt} and \code{lrnrs_outcomes} arguments as
+repository, it is not required to use \pkg{lmtp}. Instead, the \code{lrnrs_trt} and 
+\code{lrnrs_outcomes} arguments can be set equal to
 \code{NULL} and nuisance parameters will be estimated using a
 generalized linear model (GLM) with the \code{glm} function from the
 \pkg{stats} package.
@@ -452,7 +459,6 @@ R> shift <- function(data, trt) {
 R+   (data[[trt]] - 1) * (data[[trt]] - 1 >= 1) + 
 R+     data[[trt]] * (data[[trt]] - 1 < 1)
 R+ }
-R> 
 R> lmtp_tmle(sim_t4, trt, y, time_vary = time_vary, shift = shift)
 \end{CodeInput}
 
@@ -487,17 +493,17 @@ Population intervention effect
 super
 learner}\label{example-2-longitudinal-mtp-right-censoring-and-the-super-learner}}
 
-Observational data is often accompanied with loss-to-follow-up. For this
+For this
 example, we have a simulated dataset of \(n = 1000\) observations. Data
 was simulated for three time points with a continuous time-varying
 exposure at times \(t \in \{1, 2\}\) (\code{A1}, \code{A2}), a
 dichotomous time-varying covariate at times \(t \in \{1, 2\}\)
 (\code{L1}, \code{L2}), and a dichotomous outcome (\code{Y}) at time
-\(t = 3\). Loss-to-follow-up is present after time \(t = 1\) so the data
-contains censoring indicators (\code{C1}, \code{C2}). This data set is
+\(t = 3\). Loss-to-follow-up is present after time \(t = 1\) so the data set
+contains censoring indicators (\code{C1}, \code{C2}). This data is
 installed with the package and is stored in the object \code{sim_cens}.
 
-Suppose we are interested in the additive effect of a MTP where exposure
+Suppose we are interested in the additive effect of an MTP where exposure
 is increased by 0.5 at every time point for all observations.
 
 \hypertarget{example-3}{%
@@ -511,6 +517,5 @@ is increased by 0.5 at every time point for all observations.
 
 \renewcommand\refname{References}
 \bibliography{lmtp-paper.bib}
-
 
 \end{document}
