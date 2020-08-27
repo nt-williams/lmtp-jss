@@ -6,3 +6,5 @@
 lmtp.aux
 lmtp.log
 lmtp.out
+*.log
+*.gz

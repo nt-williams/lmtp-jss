@@ -1,4 +1,4 @@
-\begin{thebibliography}{9}
+\begin{thebibliography}{23}
 \newcommand{\enquote}[1]{``#1''}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
@@ -8,6 +8,28 @@
   \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
   \urlstyle{rm}\Url}\fi
 \providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem[{Bengtsson(2020{\natexlab{a}})}]{future}
+Bengtsson H (2020{\natexlab{a}}).
+\newblock \emph{future: Unified Parallel and Distributed Processing in R for
+  Everyone}.
+\newblock R package version 1.18.0,
+  \urlprefix\url{https://CRAN.R-project.org/package=future}.
+
+\bibitem[{Bengtsson(2020{\natexlab{b}})}]{progressr}
+Bengtsson H (2020{\natexlab{b}}).
+\newblock \emph{progressr: A Inclusive, Unifying API for Progress Updates}.
+\newblock R package version 0.6.0,
+  \urlprefix\url{https://CRAN.R-project.org/package=progressr}.
+
+\bibitem[{Buckley and James(1979)}]{buckleyLinearRegressionCensored1979}
+Buckley J, James I (1979).
+\newblock \enquote{Linear {Regression} with {Censored} {Data}.}
+\newblock \emph{Biometrika}, \textbf{66}(3), 429--436.
+\newblock ISSN 0006-3444.
+\newblock \doi{10.2307/2335161}.
+\newblock Publisher: [Oxford University Press, Biometrika Trust],
+  \urlprefix\url{https://www.jstor.org/stable/2335161}.
 
 \bibitem[{Cheng and Chu(2004)}]{chengSemiparametricDensityEstimation2004}
 Cheng KF, Chu CK (2004).
@@ -19,6 +41,26 @@ Cheng KF, Chu CK (2004).
   Society for Mathematical Statistics and Probability,
   \urlprefix\url{https://www.jstor.org/stable/3318817}.
 
+\bibitem[{Chernozhukov \emph{et~al.}(2018)Chernozhukov, Chetverikov, Demirer,
+  Duflo, Hansen, Newey, and Robins}]{chernozhukovDoubleDebiasedMachine2018}
+Chernozhukov V, Chetverikov D, Demirer M, Duflo E, Hansen C, Newey W, Robins J
+  (2018).
+\newblock \enquote{Double/debiased machine learning for treatment and
+  structural parameters.}
+\newblock \emph{The Econometrics Journal}, \textbf{21}(1), C1--C68.
+\newblock ISSN 1368-423X.
+\newblock \doi{10.1111/ectj.12097}.
+\newblock \_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1111/ectj.12097,
+  \urlprefix\url{https://onlinelibrary.wiley.com/doi/abs/10.1111/ectj.12097}.
+
+\bibitem[{Coyle \emph{et~al.}(2020)Coyle, Hejazi, Malenica, and
+  Sofrygin}]{coyleSl3}
+Coyle JR, Hejazi NS, Malenica I, Sofrygin O (2020).
+\newblock \emph{{sl3}: Pipelines for Machine Learning and {Super Learning}}.
+\newblock \doi{10.5281/zenodo.1342293}.
+\newblock R package version 1.3.8,
+  \urlprefix\url{https://github.com/tlverse/sl3}.
+
 \bibitem[{Diaz \emph{et~al.}(2020)Diaz, Williams, Hoffman, and
   Schenck}]{diazNonparametricCausalEffects2020a}
 Diaz I, Williams N, Hoffman KL, Schenck EJ (2020).
@@ -27,6 +69,17 @@ Diaz I, Williams N, Hoffman KL, Schenck EJ (2020).
 \newblock \emph{arXiv:2006.01366}.
 \newblock ArXiv: 2006.01366 version: 2,
   \urlprefix\url{http://arxiv.org/abs/2006.01366}.
+
+\bibitem[{Fan and Gijbels(1994)}]{fanCensoredRegressionLocal1994}
+Fan J, Gijbels I (1994).
+\newblock \enquote{Censored {Regression}: {Local} {Linear} {Approximations} and
+  {Their} {Applications}.}
+\newblock \emph{Journal of the American Statistical Association},
+  \textbf{89}(426), 560--570.
+\newblock ISSN 0162-1459.
+\newblock \doi{10.2307/2290859}.
+\newblock Publisher: [American Statistical Association, Taylor \& Francis,
+  Ltd.], \urlprefix\url{https://www.jstor.org/stable/2290859}.
 
 \bibitem[{Haneuse and
   Rotnitzky(2013)}]{haneuseEstimationEffectInterventions2013}
@@ -38,6 +91,18 @@ Haneuse S, Rotnitzky A (2013).
 \newblock \doi{10.1002/sim.5907}.
 \newblock \_eprint: https://onlinelibrary.wiley.com/doi/pdf/10.1002/sim.5907,
   \urlprefix\url{https://onlinelibrary.wiley.com/doi/abs/10.1002/sim.5907}.
+
+\bibitem[{Kennedy \emph{et~al.}(2017)Kennedy, Ma, McHugh, and
+  Small}]{kennedyNonparametricMethodsDoubly2017}
+Kennedy EH, Ma Z, McHugh MD, Small DS (2017).
+\newblock \enquote{Nonparametric methods for doubly robust estimation of
+  continuous treatment effects.}
+\newblock \emph{Journal of the Royal Statistical Society. Series B, Statistical
+  methodology}, \textbf{79}(4), 1229--1245.
+\newblock ISSN 1369-7412.
+\newblock \doi{10.1111/rssb.12212}.
+\newblock
+  \urlprefix\url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5627792/}.
 
 \bibitem[{Laan \emph{et~al.}(2007)Laan, Polley, and
   Hubbard}]{laanSuperLearner2007}
@@ -70,6 +135,12 @@ Laan MJvd, Rubin D (2006).
   Biostatistics,
   \urlprefix\url{https://www.degruyter.com/view/journals/ijb/2/1/article-ijb.2006.2.1.1043.xml.xml}.
 
+\bibitem[{Milborrow(2019)}]{milborrowEarth}
+Milborrow S (2019).
+\newblock \emph{earth: Multivariate Adaptive Regression Splines}.
+\newblock R package version 5.1.2,
+  \urlprefix\url{https://CRAN.R-project.org/package=earth}.
+
 \bibitem[{Muñoz and van~der
   Laan(2012)}]{munozPopulationInterventionCausal2012}
 Muñoz ID, van~der Laan M (2012).
@@ -88,6 +159,12 @@ Qin J (1998).
 \newblock Publisher: [Oxford University Press, Biometrika Trust],
   \urlprefix\url{https://www.jstor.org/stable/2337391}.
 
+\bibitem[{Robinson and Hayes(2020)}]{broom}
+Robinson D, Hayes A (2020).
+\newblock \emph{broom: Convert Statistical Analysis Objects into Tidy Tibbles}.
+\newblock R package version 0.5.6,
+  \urlprefix\url{https://CRAN.R-project.org/package=broom}.
+
 \bibitem[{Rosenbaum and Rubin(1983)}]{rosenbaumCentralRolePropensity1983}
 Rosenbaum PR, Rubin DB (1983).
 \newblock \enquote{The {Central} {Role} of the {Propensity} {Score} in
@@ -97,5 +174,53 @@ Rosenbaum PR, Rubin DB (1983).
 \newblock \doi{10.2307/2335942}.
 \newblock Publisher: [Oxford University Press, Biometrika Trust],
   \urlprefix\url{https://www.jstor.org/stable/2335942}.
+
+\bibitem[{Rotnitzky \emph{et~al.}(2006)Rotnitzky, Faraggi, and
+  Schisterman}]{rotnitzkyDoublyRobustEstimation2006}
+Rotnitzky A, Faraggi D, Schisterman E (2006).
+\newblock \enquote{Doubly {Robust} {Estimation} of the {Area} {Under} the
+  {Receiver}-{Operating} {Characteristic} {Curve} in the {Presence} of
+  {Verification} {Bias}.}
+\newblock \emph{Journal of the American Statistical Association},
+  \textbf{101}(475), 1276--1288.
+\newblock ISSN 0162-1459, 1537-274X.
+\newblock \doi{10.1198/016214505000001339}.
+\newblock
+  \urlprefix\url{http://www.tandfonline.com/doi/abs/10.1198/016214505000001339}.
+
+\bibitem[{Rubin and Laan(2006)}]{rubinDoublyRobustCensoring2006}
+Rubin D, Laan Mvd (2006).
+\newblock \enquote{Doubly {Robust} {Censoring} {Unbiased} {Transformations}.}
+\newblock \emph{U.C. Berkeley Division of Biostatistics Working Paper Series}.
+\newblock \urlprefix\url{https://biostats.bepress.com/ucbbiostat/paper208}.
+
+\bibitem[{van~der Laan and
+  Dudoit(2003)}]{vanderlaanUnifiedCrossValidationMethodology2003}
+van~der Laan M, Dudoit S (2003).
+\newblock \enquote{Unified {Cross}-{Validation} {Methodology} {For} {Selection}
+  {Among} {Estimators} and a {General} {Cross}-{Validated} {Adaptive}
+  {Epsilon}-{Net} {Estimator}: {Finite} {Sample} {Oracle} {Inequalities} and
+  {Examples}.}
+\newblock \emph{U.C. Berkeley Division of Biostatistics Working Paper Series}.
+\newblock \urlprefix\url{https://biostats.bepress.com/ucbbiostat/paper130}.
+
+\bibitem[{Wright and Ziegler(2017)}]{wrightRanger}
+Wright MN, Ziegler A (2017).
+\newblock \enquote{{ranger}: A Fast Implementation of Random Forests for High
+  Dimensional Data in {C++} and {R}.}
+\newblock \emph{Journal of Statistical Software}, \textbf{77}(1), 1--17.
+\newblock \doi{10.18637/jss.v077.i01}.
+
+\bibitem[{Zheng and van~der
+  Laan(2011)}]{zhengCrossValidatedTargetedMinimumLossBased2011b}
+Zheng W, van~der Laan MJ (2011).
+\newblock \enquote{Cross-{Validated} {Targeted} {Minimum}-{Loss}-{Based}
+  {Estimation}.}
+\newblock In MJ~van~der Laan, S~Rose (eds.), \emph{Targeted {Learning}:
+  {Causal} {Inference} for {Observational} and {Experimental} {Data}}, Springer
+  {Series} in {Statistics}, pp. 459--474. Springer, New York, NY.
+\newblock ISBN 978-1-4419-9782-1.
+\newblock \doi{10.1007/978-1-4419-9782-1_27}.
+\newblock \urlprefix\url{https://doi.org/10.1007/978-1-4419-9782-1_27}.
 
 \end{thebibliography}

@@ -153,25 +153,6 @@ version: 2},
 	file = {arXiv Fulltext PDF:/Users/Nick/Zotero/storage/2476RRIJ/Díaz et al. - 2020 - Non-parametric causal effects based on longitudina.pdf:application/pdf;arXiv.org Snapshot:/Users/Nick/Zotero/storage/VA3XY47I/2006.html:text/html}
 }
 
-@incollection{zhengCrossValidatedTargetedMinimumLossBased2011a,
-	address = {New York, NY},
-	series = {Springer {Series} in {Statistics}},
-	title = {Cross-{Validated} {Targeted} {Minimum}-{Loss}-{Based} {Estimation}},
-	isbn = {978-1-4419-9782-1},
-	url = {https://doi.org/10.1007/978-1-4419-9782-1_27},
-	abstract = {In previous chapters, we introduced targeted maximum likelihood estimation in semiparametric models, which incorporates adaptive estimation (e.g., loss-based super learning) of the relevant part of the data-generating distribution and subsequently carries out a targeted bias reduction by maximizing the log-likelihood, or minimizing another loss-specific empirical risk, over a “clever” parametric working model through the initial estimator, treating the initial estimator as offset. This updating process may need to be iterated to convergence. The target parameter of the resulting updated estimator is then evaluated, and is called the targeted minimum-loss- based estimator (also TMLE) of the target parameter of the data-generating distribution. This estimator is, by definition, a substitution estimator, and, under regularity conditions, is a double robust semiparametric efficient estimator.},
-	language = {en},
-	urldate = {2020-07-01},
-	booktitle = {Targeted {Learning}: {Causal} {Inference} for {Observational} and {Experimental} {Data}},
-	publisher = {Springer},
-	author = {Zheng, Wenjing and van der Laan, Mark J.},
-	editor = {van der Laan, Mark J. and Rose, Sherri},
-	year = {2011},
-	doi = {10.1007/978-1-4419-9782-1_27},
-	pages = {459--474},
-	file = {Springer Full Text PDF:/Users/Nick/Zotero/storage/5X8V6J6E/Zheng and van der Laan - 2011 - Cross-Validated Targeted Minimum-Loss-Based Estima.pdf:application/pdf}
-}
-
 @article{chernozhukovDoubleDebiasedMachine2018,
 	title = {Double/debiased machine learning for treatment and structural parameters},
 	volume = {21},
@@ -945,3 +926,117 @@ Section: The International Journal of Biostatistics},
 Section: Statistical Applications in Genetics and Molecular Biology},
 	file = {Full Text PDF:/Users/Nick/Zotero/storage/6ZXSI4YK/Laan et al. - 2007 - Super Learner.pdf:application/pdf;Snapshot:/Users/Nick/Zotero/storage/TPJZVLU9/article-sagmb.2007.6.1.1309.xml.html:text/html}
 }
+
+@article{buckleyLinearRegressionCensored1979,
+	title = {Linear {Regression} with {Censored} {Data}},
+	volume = {66},
+	issn = {0006-3444},
+	url = {https://www.jstor.org/stable/2335161},
+	doi = {10.2307/2335161},
+	abstract = {We give a method of estimating parameters in the linear regression model which allows the dependent variable to be censored and the residual distribution to be unspecified. The method differs from that of Miller (1976) in that the normal equations rather than the sum of squares of residuals are modified and this appears to overcome the inconsistency problems in Miller's approach. Large sample properties of the estimator of slope are derived heuristically and substantiated by simulations. Some of the heart transplant data reported and analysed by Miller are reanalysed using the present method.},
+	number = {3},
+	urldate = {2020-08-27},
+	journal = {Biometrika},
+	author = {Buckley, Jonathan and James, Ian},
+	year = {1979},
+	note = {Publisher: [Oxford University Press, Biometrika Trust]},
+	pages = {429--436}
+}
+
+@article{fanCensoredRegressionLocal1994,
+	title = {Censored {Regression}: {Local} {Linear} {Approximations} and {Their} {Applications}},
+	volume = {89},
+	issn = {0162-1459},
+	shorttitle = {Censored {Regression}},
+	url = {https://www.jstor.org/stable/2290859},
+	doi = {10.2307/2290859},
+	abstract = {Various statistical tools are available for modeling the relationship between response and covariate if the data are fully observable. In the situation of censored data, however, those tools are no longer directly applicable. This article provides an easily implemented methodology for modeling the association, based on censored data. The form of the regression relationship will be completely determined by the data; no assumptions are made about this form. Basic ideas behind the methodology are to transform the observed data in an appropriate simple way and then to apply a locally weighted least squares regression. The proposed estimator involves a variable bandwidth that automatically adapts to the design of the data points. That the methodology is very easy to implement is illustrated by several examples, including simulation studies and an analysis of the Stanford Heart Transplant Data and the Primary Biliary Cirrhosis Data. Several theoretical considerations are reflected in the examples. Finally, some basic asymptotic results are established.},
+	number = {426},
+	urldate = {2020-08-27},
+	journal = {Journal of the American Statistical Association},
+	author = {Fan, Jianqing and Gijbels, Irene},
+	year = {1994},
+	note = {Publisher: [American Statistical Association, Taylor \& Francis, Ltd.]},
+	pages = {560--570}
+}
+
+@misc{laanUnifiedCrossValidationMethodology2003,
+	title = {Unified {Cross}-{Validation} {Methodology} {For} {Selection} {Among} {Estimators} and a {General} {Cross}-{Validated} {Adaptive} {Epsilon}-{Net} {Estimator}: {Finite} {Sample} {Oracle} {Inequalities} and {Examples}},
+	shorttitle = {Unified {Cross}-{Validation} {Methodology} {For} {Selection} {Among} {Estimators} and a {General} {Cross}-{Validated} {Adaptive} {Epsilon}-{Net} {Estimator}},
+	url = {/paper/Unified-Cross-Validation-Methodology-For-Selection-Laan-Dudoit/8e3cfaa13b97d152833b429b179eed389394eecf},
+	abstract = {In Part I of this article we propose a general cross-validation criterian for selecting among a collection of estimators of a particular parameter of interest based on n i.i.d. observations. It is assumed that the parameter of interest minimizes the expectation (w.r.t. to the distribution of the observed data structure) of a particular loss function of a candidate parameter value and the observed data structure, possibly indexed by a nuisance parameter. The proposed cross-validation criterian is defined as the empirical mean over the validation sample of the loss function at the parameter estimate based on the training sample, averaged over random splits of the observed sample. The cross-validation selector is now the estimator which minimizes this cross-validation criterion. We illustrate that this general methodology covers, in particular, the selection problems in the current literature, but results in a wide range of new selection methods. We prove a finite sample oracle inequality, and asymptotic optimality of the cross-validated selector under general conditions. The asymptotic optimality states that the cross-validation selector performs asymptotically exactly as well as the selector which for each given data set makes the best choice (knowing the true data generating distribution). Our general framework allows, in particular, the situation in which the observed data structure is a censored version of the full data structure of interest, and where the parameter of interest is a parameter of the full data structure distribution. As examples of the parameter of the full data distribution we consider a density of (a part of) the full data structure, a conditional expectation of an outcome, given explanatory variables, a marginal survival function of a failure time, and multivariate conditional expectation of an outcome vector, given covariates. In part II of this article we show that the general estimating function methodology for censored data structures as provided in van der Laan, Robins (2002) yields the wished loss functions for the selection among estimators of a full-data distribution parameter of interest based on censored data. The corresponding cross-validation selector generalizes any of the existing selection methods in regression and density estimation (including model selection) to the censored data case. Under general conditions, our optimality results now show that the corresponing cross-validation selector performs asymptotically exactly as well as the selector which for each given data set makes the best choice (knowing the true full data distribution). In Part III of this article we propose a general estimator which is defined as follows. For a collection of subspaces and the complete parameter space, one defines an epsilon-net (i.e., a finite set of points whose epsilon-spheres cover the complete parameter space). For each epsilon and subspace one defines now a corresponding minimum cross-valided empirical risk estimator as the minimizer of cross-validated risk over the subspace-specific epsilon-net. In the special case that the loss function has no nuisance parameter, which thus covers the classical regression and density estimation cases, this epsilon and subspace specific minimum risk estimator reduces to the minimizer of the empirical risk over the corresponding epsilon-net. Finally, one selects epsilon and the subspace with the cross-validation selector. We refer to the resulting estimator as the cross-validated adaptive epsilon-net estimator. We prove an oracle inequality for this estimator which implies that the estimator minimax adaptive in the sense that it achieves the minimax optimal rate of convergence for the smallest of the guessed subspaces containing the true parameter value. Cross-Validation for Estimator Selection 1 Stating the Selection Problem. Let O1, . . . , On be n i.i.d. observations of O ∼ P0, where P0 is known to be an element of a statistical model M. Let ψ0(·) = ψ(· {\textbar} P0) be a parameter (function) of P0 of interest. Let the parameter set for this parameter be Ψ = \{ψ(· {\textbar} P ) : P ∈ M\}. Let (O,ψ) → L(O,ψ {\textbar} η0) ∈ IR be a “loss function”, possibly depending on a nuisance parameter η0 = η(P0), which maps a candidate parameter value ψ and observation O into a real number, whose expectation is minimized at ψ0: ψ0 = argminψ∈Ψ ∫ L(o, ψ {\textbar} η0)dP0(o) (1) = argminψ∈ΨE0L(O,ψ {\textbar} η0). Let Pn be the empirical distribution of O1, . . . , On. Let ψk(·) = ψk(· {\textbar} Pn) ∈ Ψ, k = 1, . . . , K(n), be a collection of estimators (i.e., algorithms one can apply to data) of ψ0(·). The choice of loss function. Different choices of loss functions can satisfy (1). In fact, (1) can define a class of possible loss functions. Different choices of loss functions result in estimators of ψ0 with different behavior. Consequently, the choice of loss function is an interesting issue to be addressed. We suggest the following reasonable strategy for selecting a loss function. Firstly, among the loss functions identifying ψ0 as the minimizer of its risk (i.e., satisfying (1), one wishes to choose a loss function which identifies the wished measure of performance/Risk θ(ψ {\textbar} P0) ≡ ∫ L(O,ψ {\textbar} η0)dP0(O) for a candidate ψ ∈ Ψ. Identifying such a function θ(ψ {\textbar} P0) on the parameter set Ψ does still not uniquely identify the loss function L(O,ψ {\textbar} η0). Secondly, given this function θ(ψ {\textbar} P0), we now wish to choose the loss function so that for a locally consistent estimator ηn of η0, 1/n ∑ i L(Oi, ψ {\textbar} ηn) is a locally efficient estimator of θ(ψ {\textbar} P0). That is, let L(O,ψ {\textbar} η0) be a parametrization of},
+	language = {en},
+	urldate = {2020-08-27},
+	author = {Laan, M. and Dudoit, S.},
+	year = {2003},
+	file = {Snapshot:/Users/Nick/Zotero/storage/2WXSNSE2/8e3cfaa13b97d152833b429b179eed389394eecf.html:text/html}
+}
+
+@article{vanderlaanUnifiedCrossValidationMethodology2003,
+	title = {Unified {Cross}-{Validation} {Methodology} {For} {Selection} {Among} {Estimators} and a {General} {Cross}-{Validated} {Adaptive} {Epsilon}-{Net} {Estimator}: {Finite} {Sample} {Oracle} {Inequalities} and {Examples}},
+	shorttitle = {Unified {Cross}-{Validation} {Methodology} {For} {Selection} {Among} {Estimators} and a {General} {Cross}-{Validated} {Adaptive} {Epsilon}-{Net} {Estimator}},
+	url = {https://biostats.bepress.com/ucbbiostat/paper130},
+	journal = {U.C. Berkeley Division of Biostatistics Working Paper Series},
+	author = {van der Laan, Mark and Dudoit, Sandrine},
+	month = nov,
+	year = {2003},
+	file = {"Unified Cross-Validation Methodology For Selection Among Estimators an" by Mark J. van der Laan and Sandrine Dudoit:/Users/Nick/Zotero/storage/89LHAEW9/paper130.html:text/html}
+}
+
+@article{rotnitzkyDoublyRobustEstimation2006,
+	title = {Doubly {Robust} {Estimation} of the {Area} {Under} the {Receiver}-{Operating} {Characteristic} {Curve} in the {Presence} of {Verification} {Bias}},
+	volume = {101},
+	issn = {0162-1459, 1537-274X},
+	url = {http://www.tandfonline.com/doi/abs/10.1198/016214505000001339},
+	doi = {10.1198/016214505000001339},
+	language = {en},
+	number = {475},
+	urldate = {2020-08-27},
+	journal = {Journal of the American Statistical Association},
+	author = {Rotnitzky, Andrea and Faraggi, David and Schisterman, Enrique},
+	month = sep,
+	year = {2006},
+	pages = {1276--1288},
+	file = {Rotnitzky et al. - 2006 - Doubly Robust Estimation of the Area Under the Rec.pdf:/Users/Nick/Zotero/storage/9Q7J4EAV/Rotnitzky et al. - 2006 - Doubly Robust Estimation of the Area Under the Rec.pdf:application/pdf}
+}
+
+@article{rubinDoublyRobustCensoring2006,
+	title = {Doubly {Robust} {Censoring} {Unbiased} {Transformations}},
+	url = {https://biostats.bepress.com/ucbbiostat/paper208},
+	journal = {U.C. Berkeley Division of Biostatistics Working Paper Series},
+	author = {Rubin, Daniel and Laan, Mark van der},
+	month = jun,
+	year = {2006},
+	file = {"Doubly Robust Censoring Unbiased Transformations" by Daniel Rubin and Mark J. van der Laan:/Users/Nick/Zotero/storage/QGGYFIZY/paper208.html:text/html}
+}
+
+@article{kennedyNonparametricMethodsDoubly2017,
+	title = {Nonparametric methods for doubly robust estimation of continuous treatment effects},
+	volume = {79},
+	issn = {1369-7412},
+	url = {https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5627792/},
+	doi = {10.1111/rssb.12212},
+	abstract = {Continuous treatments (e.g., doses) arise often in practice, but many available causal effect estimators are limited by either requiring parametric models for the effect curve, or by not allowing doubly robust covariate adjustment. We develop a novel kernel smoothing approach that requires only mild smoothness assumptions on the effect curve, and still allows for misspecification of either the treatment density or outcome regression. We derive asymptotic properties and give a procedure for data-driven bandwidth selection. The methods are illustrated via simulation and in a study of the effect of nurse staffing on hospital readmissions penalties.},
+	number = {4},
+	urldate = {2020-08-27},
+	journal = {Journal of the Royal Statistical Society. Series B, Statistical methodology},
+	author = {Kennedy, Edward H. and Ma, Zongming and McHugh, Matthew D. and Small, Dylan S.},
+	month = sep,
+	year = {2017},
+	pmid = {28989320},
+	pmcid = {PMC5627792},
+	pages = {1229--1245},
+	file = {PubMed Central Full Text PDF:/Users/Nick/Zotero/storage/339HNEZ5/Kennedy et al. - 2017 - Nonparametric methods for doubly robust estimation.pdf:application/pdf}
+}
+
+  @Manual{coyleSl3,    title = {{sl3}: Pipelines for Machine Learning and {Super Learning}},    author = {Jeremy R Coyle and Nima S Hejazi and Ivana Malenica and Oleg Sofrygin},    year = {2020},    note = {R package version 1.3.8},    doi = {10.5281/zenodo.1342293},    url = {https://github.com/tlverse/sl3},  }
+
+  @Article{wrightRanger,    title = {{ranger}: A Fast Implementation of Random Forests for High Dimensional Data in {C++} and {R}},    author = {Marvin N. Wright and Andreas Ziegler},    journal = {Journal of Statistical Software},    year = {2017},    volume = {77},    number = {1},    pages = {1--17},    doi = {10.18637/jss.v077.i01},  }
+  
+  @Manual{milborrowEarth,    title = {earth: Multivariate Adaptive Regression Splines},    author = {Stephen Milborrow},    year = {2019},    note = {R package version 5.1.2},    url = {https://CRAN.R-project.org/package=earth},  }
+  
+  @Manual{future,    title = {future: Unified Parallel and Distributed Processing in R for Everyone},    author = {Henrik Bengtsson},    year = {2020},    note = {R package version 1.18.0},    url = {https://CRAN.R-project.org/package=future},  }
+  
+  @Manual{progressr,    title = {progressr: A Inclusive, Unifying API for Progress Updates},    author = {Henrik Bengtsson},    year = {2020},    note = {R package version 0.6.0},    url = {https://CRAN.R-project.org/package=progressr},  }
+  
+  @Manual{broom,    title = {broom: Convert Statistical Analysis Objects into Tidy Tibbles},    author = {David Robinson and Alex Hayes},    year = {2020},    note = {R package version 0.5.6},    url = {https://CRAN.R-project.org/package=broom},  }
