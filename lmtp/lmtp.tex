@@ -230,15 +230,32 @@ effects}\label{estimating-modified-treatment-policy-effects}}
 \subsection{Estimation methods}\label{estimation-methods}}
 
 The \pkg{lmtp} package implements four estimation methods: a targeted
-minimum-loss based estimator (TMLE), a sequentially doubly-robust
+minimum-loss based estimator (TMLE), a sequential doubly-robust
 estimator (SDR), an estimator based on the parametric G-formula, and an inverse
 probability weighted (IPW) estimator. We will only describe the use of
-the TMLE, \code{lmtp_tmle}, and SDR, \code{lmtp_sdr}, estimators as
+TMLE, \code{lmtp_tmle}, and SDR, \code{lmtp_sdr}, as
 their use is strongly suggested over the others.
 
-Discuss the difference between TMLE and SDR estimators and when one may
-have an advantage over the other. All examples in this article will use
-both the TMLE and SDR estimators.
+Targeted minimum-loss based estimation is a general framework for constructing
+asymptotically linear estimators with an optimal bias-variance tradeoff 
+of the target causal parameter (INSERT A CITATION FOR THIS). In general, 
+TMLE is constructed from a factorization of the target parameter 
+into an outcome regression and a treatment mechanism. Using the outcome regression, 
+an initial estimate of the target parameter is constructed and then \textit{de-biased} 
+by a fluctuation that depends on a function of the treatment mechanism. The sequential
+doubly-robust estimator is based on a unbiased transformation of the efficient influence
+function of the target estimand. For a thorough discussion of TMLE and SDR, we
+recommend the following articles (INSERT THESE ARTICLES).
+
+Both TMLE and SDR are multiply-robust. Specifically, 
+TMLE is considered \(\tau + 1\)-multiply robust while SDR is
+robust under \(2^{\tau}\)-configurations. EXPLAIN WHAT THIS MEANS. 
+
+It is important to note that it is possible for the SDR to produce an estimate of \(\hat{\theta}\)
+outside of the bounds of the parameter space. Taking into account that for a single time-point
+the TMLE and SDR have equivalent robustness, we recommend use of TMLE for the case of a single time-point, 
+while we recommend use of SDR for the longitudinal setting. All examples in this article will use
+both estimators.
 
 \hypertarget{required-data-structure}{%
 \subsection{Required data structure}\label{required-data-structure}}
@@ -347,13 +364,13 @@ duplicated observations \(A_{0, i, t}\) are the observed exposure values
 and \(A_{1, i, t}\) for \(i \in \{n+1, ..., 2n\}\) are the exposure
 values under the MTP \(d\), \(A^{d}_t\).
 
-\hypertarget{coding-modified-treatment-policies}{%
-\subsection{Coding modified treatment
-policies}\label{coding-modified-treatment-policies}}
+\hypertarget{creating-modified-treatment-policies}{%
+\subsection{Creating modified treatment
+policies}\label{creating-modified-treatment-policies}}
 
 Treatment policies are specified using the \code{shift} argument, which
-takes a user-defined function that returns a vector of exposure values
-according the policy of interest. Shift functions should take two
+accepts a user-defined function that returns a vector of exposure values
+modified according to the policy of interest. Shift functions should take two
 arguments, the first for specifying a data set and the second for
 specifying the current exposure variable. For example, a possible MTP
 may increase exposure by 2 units if the natural exposure value was below
@@ -414,7 +431,7 @@ generalized linear model (GLM) with the \code{glm} function from the
 \hypertarget{additional-arguments}{%
 \subsection{Additional arguments}\label{additional-arguments}}
 
-Cross-fitting is used with all methods \citep{zhengCrossValidatedTargetedMinimumLossBased2011b, chernozhukovDoubleDebiasedMachine2018}, and the number
+Sample-splitting and cross-fitting is used with all methods \citep{zhengCrossValidatedTargetedMinimumLossBased2011b, chernozhukovDoubleDebiasedMachine2018}, and the number
 of folds can be set with the \code{folds} argument; the minimum number of allowed folds is two.
 If data has a hierarchical structure, the \code{id} argument is used to indicate the name of a variable
 in the data set indicating unique groups. These identifiers will be used for generation of cross-validation 
@@ -576,7 +593,11 @@ R> lmtp_contrast(tml, ref = tml_obs)
 \end{CodeInput}
 
 \begin{CodeOutput}
-  LMTP Contrast: additiveNull hypothesis: theta == 0  theta shift   ref std.error conf.low conf.high p.value1 0.104 0.901 0.797   0.00607   0.0918     0.116  <0.001
+  LMTP Contrast: additive
+Null hypothesis: theta == 0
+
+  theta shift   ref std.error conf.low conf.high p.value
+1 0.104 0.901 0.797   0.00607   0.0918     0.116  <0.001
 \end{CodeOutput}
 
 \begin{CodeInput}
@@ -587,7 +608,11 @@ R> lmtp_contrast(sdr, ref = sdr_obs)
 \end{CodeInput}
 
 \begin{CodeOutput}
-  LMTP Contrast: additiveNull hypothesis: theta == 0   theta shift ref std.error conf.low conf.high p.value1 0.0998 0.899 0.8   0.00612   0.0878     0.112  <0.001
+  LMTP Contrast: additive
+Null hypothesis: theta == 0
+
+   theta shift ref std.error conf.low conf.high p.value
+1 0.0998 0.899 0.8   0.00612   0.0878     0.112  <0.001
 \end{CodeOutput}
 
 \end{CodeChunk}
@@ -617,7 +642,11 @@ R> lmtp_contrast(tml1, ref = tml0, type = "rr")
 \end{CodeInput}
 
 \begin{CodeOutput}
-  LMTP Contrast: relative riskNull hypothesis: theta == 1  theta shift   ref std.error conf.low conf.high p.value1  1.22 0.812 0.665    0.0341     1.14      1.31  <0.001
+  LMTP Contrast: relative risk
+Null hypothesis: theta == 1
+
+  theta shift   ref std.error conf.low conf.high p.value
+1  1.22 0.812 0.665    0.0341     1.14      1.31  <0.001
 \end{CodeOutput}
 
 \begin{CodeInput}
@@ -631,7 +660,11 @@ R> lmtp_contrast(sdr1, ref = sdr0, type = "rr")
 \end{CodeInput}
 
 \begin{CodeOutput}
-  LMTP Contrast: relative riskNull hypothesis: theta == 1  theta shift   ref std.error conf.low conf.high p.value1  1.21 0.809 0.667    0.0338     1.14       1.3  <0.001
+  LMTP Contrast: relative risk
+Null hypothesis: theta == 1
+
+  theta shift   ref std.error conf.low conf.high p.value
+1  1.21 0.809 0.667    0.0338     1.14       1.3  <0.001
 \end{CodeOutput}
 
 \end{CodeChunk}
