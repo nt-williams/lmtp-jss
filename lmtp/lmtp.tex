@@ -341,9 +341,8 @@ $outcome[[2]]
 \end{CodeOutput}
 \end{CodeChunk}
 
-A list of lists is returned with the names
-names of the variables in \(H_t\) to be used for estimation of
-the outcome regression and the propensity at every time \(t\).
+A list of lists is returned with the names of the variables in \(H_t\) to be used for estimation of
+the outcome regression and the treatment mechanism at every time \(t\).
 Notice that variables \(A_1\) and \(A_2\) are included for their own
 estimation. The \pkg{lmtp} package recasts the density ratio nuisance
 parameter estimation into a classification problem based on a \(2n\)
@@ -426,7 +425,7 @@ repository, it is not required to use \pkg{lmtp}. Instead, the \code{lrnrs_trt} 
 \code{lrnrs_outcomes} arguments can be set equal to
 \code{NULL} and nuisance parameters will be estimated using a
 generalized linear model (GLM) with the \code{glm} function from the
-\pkg{stats} package.
+\pkg{stats} package (INSERT STATS PACKAGE CITATION).
 
 \hypertarget{additional-arguments}{%
 \subsection{Additional arguments}\label{additional-arguments}}
