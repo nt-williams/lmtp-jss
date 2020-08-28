@@ -681,8 +681,6 @@ can utilize parallel processing provided by the \pkg{future} package \citep{futu
 
 \subsection[lmtp_tmle and lmtp_sdr]{\code{lmtp\_tmle} and \code{lmtp\_sdr}}
 
-\subsubsection{Syntax}
-
 \subsubsection{Arguments}
 
 \begin{itemize}
@@ -733,7 +731,7 @@ Objects returned from calls to \code{lmtp_tmle} or \code{lmtp_sdr} will contain:
   the MTP effect.
   \item \code{low}: The lower bound of the 95\% confidence interval of the MTP effect.
   \item \code{high}: The lower bound of the 95\% confidence interval of the MTP effect.
-  \item \code{eif}: The estimated, uncentered, influence function of the estimate.
+  \item \code{eif}: The estimated, uncentered, influence function.
   \item \code{shift}: The shift function specified with the \code{shift} argument.
   \item \code{outcome_reg}: An \(n \times \tau + 1\) matrix contained the outcome regression
   predictions. The mean of the first column is used for calculating \code{theta}.
@@ -750,15 +748,17 @@ Objects returned from calls to \code{lmtp_tmle} or \code{lmtp_sdr} will contain:
 
 \subsection[lmtp_contrast]{\code{lmtp\_contrast}}
 
-\subsubsection{Syntax}
-
 \subsubsection{Arguments}
 
 \begin{itemize}
 
-  \item \code{...}: 
-  \item \code{ref}: 
-  \item \code{type}: 
+  \item \code{...}: One or more objects returned from calls to \code{lmtp_tmle} or \code{lmtp_sdr}.
+  \item \code{ref}: Either a scalar reference value or another object returned from a call
+  to \code{lmtp_tmle} or \code{lmtp_sdr}. \code{ref} will be compared to all other objects
+  specified in the \code{...} argument.
+  \item \code{type}: The contrast of interest. Valid options are \code{"additive"} (default)
+  for the additive effect, \code{"rr"} for the relative risk, and \code{"or"} for the odds
+  ratio. \code{"rr"} and \code{"or"} are only allowed when the outcome is dichotomous.
   
 \end{itemize}
 
@@ -768,16 +768,17 @@ Objects returned from calls to \code{lmtp_contrast} will be a list containing:
 
 \begin{itemize}
 
-  \item \code{type}: 
-  \item \code{null}: 
-  \item \code{vals}: 
-  \item \code{eifs}: 
+  \item \code{type}: The contrast type specified with the \code{type} argument.
+  \item \code{null}: The null hypothesis.
+  \item \code{vals}: A data frame with the number of rows equal to the number
+  of objects specified in the \code{...} argument. The data frame will contain
+  columns for the contrast estimate (\code{"theta"}), standard error (\code{std.error}),
+  and 95\% confidence interval lower (\code{"conf.low"}) and upper (\code{"conf.high"}) bounds.
+  \item \code{eifs}: The estimated, uncentered, influence functions of the contrast estimates.
   
 \end{itemize}
 
 \subsection[create_node_list]{\code{create\_node\_list}}
-
-\subsubsection{Syntax}
 
 \subsubsection{Arguments}
 
