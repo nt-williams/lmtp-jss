@@ -11,15 +11,16 @@
 
 \bibitem[{Bengtsson(2020{\natexlab{a}})}]{future}
 Bengtsson H (2020{\natexlab{a}}).
-\newblock \emph{future: Unified Parallel and Distributed Processing in R for
-  Everyone}.
-\newblock R package version 1.18.0,
+\newblock \emph{\pkg{future}: Unified Parallel and Distributed Processing in
+  \proglang{R} for Everyone}.
+\newblock \proglang{R} package version 1.18.0,
   \urlprefix\url{https://CRAN.R-project.org/package=future}.
 
 \bibitem[{Bengtsson(2020{\natexlab{b}})}]{progressr}
 Bengtsson H (2020{\natexlab{b}}).
-\newblock \emph{progressr: A Inclusive, Unifying API for Progress Updates}.
-\newblock R package version 0.6.0,
+\newblock \emph{\pkg{progressr}: A Inclusive, Unifying API for Progress
+  Updates}.
+\newblock \proglang{R} package version 0.6.0,
   \urlprefix\url{https://CRAN.R-project.org/package=progressr}.
 
 \bibitem[{Buckley and James(1979)}]{buckleyLinearRegressionCensored1979}
@@ -56,9 +57,10 @@ Chernozhukov V, Chetverikov D, Demirer M, Duflo E, Hansen C, Newey W, Robins J
 \bibitem[{Coyle \emph{et~al.}(2020)Coyle, Hejazi, Malenica, and
   Sofrygin}]{coyleSl3}
 Coyle JR, Hejazi NS, Malenica I, Sofrygin O (2020).
-\newblock \emph{{sl3}: Pipelines for Machine Learning and {Super Learning}}.
+\newblock \emph{\pkg{sl3}: Pipelines for Machine Learning and {Super
+  Learning}}.
 \newblock \doi{10.5281/zenodo.1342293}.
-\newblock R package version 1.3.8,
+\newblock \proglang{R} package version 1.3.8,
   \urlprefix\url{https://github.com/tlverse/sl3}.
 
 \bibitem[{Diaz \emph{et~al.}(2020)Diaz, Williams, Hoffman, and
@@ -137,8 +139,8 @@ Laan MJvd, Rubin D (2006).
 
 \bibitem[{Milborrow(2019)}]{milborrowEarth}
 Milborrow S (2019).
-\newblock \emph{earth: Multivariate Adaptive Regression Splines}.
-\newblock R package version 5.1.2,
+\newblock \emph{\pkg{earth}: Multivariate Adaptive Regression Splines}.
+\newblock \proglang{R} package version 5.1.2,
   \urlprefix\url{https://CRAN.R-project.org/package=earth}.
 
 \bibitem[{Muñoz and van~der
@@ -161,8 +163,9 @@ Qin J (1998).
 
 \bibitem[{Robinson and Hayes(2020)}]{broom}
 Robinson D, Hayes A (2020).
-\newblock \emph{broom: Convert Statistical Analysis Objects into Tidy Tibbles}.
-\newblock R package version 0.5.6,
+\newblock \emph{\pkg{broom}: Convert Statistical Analysis Objects into Tidy
+  Tibbles}.
+\newblock \proglang{R} package version 0.5.6,
   \urlprefix\url{https://CRAN.R-project.org/package=broom}.
 
 \bibitem[{Rosenbaum and Rubin(1983)}]{rosenbaumCentralRolePropensity1983}
@@ -206,8 +209,8 @@ van~der Laan M, Dudoit S (2003).
 
 \bibitem[{Wright and Ziegler(2017)}]{wrightRanger}
 Wright MN, Ziegler A (2017).
-\newblock \enquote{{ranger}: A Fast Implementation of Random Forests for High
-  Dimensional Data in {C++} and {R}.}
+\newblock \enquote{\pkg{ranger}: A Fast Implementation of Random Forests for
+  High Dimensional Data in \proglang{C++} and \proglang{R}.}
 \newblock \emph{Journal of Statistical Software}, \textbf{77}(1), 1--17.
 \newblock \doi{10.18637/jss.v077.i01}.
 

@@ -6,7 +6,7 @@ Database file #1: lmtp.bib
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 You've used 23 entries,
             3215 wiz_defined-function locations,
-            843 strings with 12002 characters,
+            843 strings with 12118 characters,
 and the built_in function-call counts, 22467 in all, are:
 = -- 2257
 > -- 514
