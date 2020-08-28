@@ -679,6 +679,113 @@ can utilize parallel processing provided by the \pkg{future} package \citep{futu
 \hypertarget{reference-manual}{%
 \section{Reference Manual}\label{reference-manual}}
 
+\subsection[lmtp_tmle and lmtp_sdr]{\code{lmtp\_tmle} and \code{lmtp\_sdr}}
+
+\subsubsection{Syntax}
+
+\subsubsection{Arguments}
+
+\begin{itemize}
+
+  \item \code{data}: A data frame in wide format. 
+  \item \code{trt}: A vector containing the column names of the treatment variables ordered by time.
+  \item \code{outcome}: The column name of the outcome variable. In the case of time-to-event 
+  analysis, a vector containing the column names of the intermediate outcome variables and
+  the final outcome variable ordered by time. Only numeric values are allowed. If
+  the outcome type is binary, data should be coded as zeroes and ones.
+  \item \code{baseline}: An optional vector containing the columns names of baseline covariates
+  to be included for adjustment at every time-point.
+  \item \code{time_vary}: A list the same length as the number of time points of observation.
+  The list should be ordered following the time ordering of the model.
+  Each index of the list should be a vector containing the column names of the time-varying covariates
+  at that time-point. 
+  \item \code{cens}: An optional vector, the same length as \code{time_vary}, containing
+  the column names of censoring indicators. Must be provided if there is missingness in the outcome or
+  if a time-to-event analysis.
+  \item \code{shift}: A two argument function that specifies how treatment variables should be shifted.
+  \item \code{k}: An integer controlling the Markov property of the data generating mechanism. If \code{k = Inf}
+  (default) the history \(H_t\) will contain all previous time-point variables. If \code{k = 0} the history will
+  only contain baseline variables and time-varying covariates at \(t - 1\).
+  \item \code{outcome_type}: The outcome variable type. Valid options are \code{"continuous"} and \code{"binomial"}.
+  \item \code{id}: An optional column name containing cluster-level identifiers.
+  \item \code{bounds}: An optional vector of length two containing the upper and lower bounds
+  for a continuous outcome. If \code{NULL} the bounds will be taken as the minimum and maximum
+   of the observed data; ignored if \code{outcome_type = "binomial"}
+  \item \code{learners_outcome}: An optional \pkg{sl3} learner stack to be used for estimation
+  of the outcome regression. If \code{NULL}, estimation will default to using a generalized linear model.
+  \item \code{learners_trt}: An optional \pkg{sl3} learner stack to be used for estimation
+  of the treatment mechanism. If \code{NULL}, estimation will default to using a generalized linear model.
+  \item \code{folds}: The number of folds to be used for cross-fitting. The minimum number of allowed folds is two.
+  \item \code{bound}: Determines that maximum and minimum values (scaled) predictions will be
+  bounded to. The default is \code{1e-5}, bounding predictions between \(1\times10^{-5}\) and \(0.9999\).
+  
+\end{itemize}
+
+\subsubsection{Returns}
+
+Objects returned from calls to \code{lmtp_tmle} or \code{lmtp_sdr} will contain:
+
+\begin{itemize}
+
+  \item \code{estimator}:
+  \item \code{theta}:
+  \item \code{standard_error}:
+  \item \code{low}:
+  \item \code{high}:
+  \item \code{eif}:
+  \item \code{shift}:
+  \item \code{outcome_reg}:
+  \item \code{density_ratios}:
+  \item \code{weights_m}:
+  \item \code{weights_r}:
+  \item \code{outcome_type}:
+  
+\end{itemize}
+
+\subsection[lmtp_contrast]{\code{lmtp\_contrast}}
+
+\subsubsection{Syntax}
+
+\subsubsection{Arguments}
+
+\begin{itemize}
+
+  \item One entry in the list
+  \item Another entry in the list
+  
+\end{itemize}
+
+\subsubsection{Returns}
+
+\begin{itemize}
+
+  \item One entry in the list
+  \item Another entry in the list
+  
+\end{itemize}
+
+\subsection[create_node_list]{\code{create\_node\_list}}
+
+\subsubsection{Syntax}
+
+\subsubsection{Arguments}
+
+\begin{itemize}
+
+  \item One entry in the list
+  \item Another entry in the list
+  
+\end{itemize}
+
+\subsubsection{Returns}
+
+\begin{itemize}
+
+  \item One entry in the list
+  \item Another entry in the list
+  
+\end{itemize}
+
 \renewcommand\refname{References}
 \bibliography{lmtp.bib}
 
