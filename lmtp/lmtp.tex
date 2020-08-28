@@ -695,7 +695,7 @@ can utilize parallel processing provided by the \pkg{future} package \citep{futu
   the outcome type is binary, data should be coded as zeroes and ones.
   \item \code{baseline}: An optional vector containing the columns names of baseline covariates
   to be included for adjustment at every time-point.
-  \item \code{time_vary}: A list the same length as the number of time points of observation.
+  \item \code{time_vary}: A list the same length as the number of time-points under observation.
   The list should be ordered following the time ordering of the model.
   Each index of the list should be a vector containing the column names of the time-varying covariates
   at that time-point. 
@@ -727,18 +727,24 @@ Objects returned from calls to \code{lmtp_tmle} or \code{lmtp_sdr} will contain:
 
 \begin{itemize}
 
-  \item \code{estimator}:
-  \item \code{theta}:
-  \item \code{standard_error}:
-  \item \code{low}:
-  \item \code{high}:
-  \item \code{eif}:
-  \item \code{shift}:
-  \item \code{outcome_reg}:
-  \item \code{density_ratios}:
-  \item \code{weights_m}:
-  \item \code{weights_r}:
-  \item \code{outcome_type}:
+  \item \code{estimator}: The estimator used, either TMLE or SDR.
+  \item \code{theta}: The estimated population MTP effect.
+  \item \code{standard_error}: The estimated, influence function based, standard error of
+  the MTP effect.
+  \item \code{low}: The lower bound of the 95\% confidence interval of the MTP effect.
+  \item \code{high}: The lower bound of the 95\% confidence interval of the MTP effect.
+  \item \code{eif}: The estimated, uncentered, influence function of the estimate.
+  \item \code{shift}: The shift function specified with the \code{shift} argument.
+  \item \code{outcome_reg}: An \(n \times \tau + 1\) matrix contained the outcome regression
+  predictions. The mean of the first column is used for calculating \code{theta}.
+  \item \code{density_ratios}: An \(n \times \tau\) matrix containing the estimated density
+  ratios from estimation of the treatment mechanism.
+  \item \code{weights_m}: A list the same length as the \code{folds} argument containing the
+  super learner ensemble weights at each time-point for each fold of the outcome regression.
+  \item \code{weights_r}: A list the same length as the \code{folds} argument containing the
+  super learner ensemble weights at each time-point for each fold of the treatment mechanism
+  estimation.
+  \item \code{outcome_type}: The outcome variable type.
   
 \end{itemize}
 
@@ -750,17 +756,22 @@ Objects returned from calls to \code{lmtp_tmle} or \code{lmtp_sdr} will contain:
 
 \begin{itemize}
 
-  \item One entry in the list
-  \item Another entry in the list
+  \item \code{...}: 
+  \item \code{ref}: 
+  \item \code{type}: 
   
 \end{itemize}
 
 \subsubsection{Returns}
 
+Objects returned from calls to \code{lmtp_contrast} will be a list containing:
+
 \begin{itemize}
 
-  \item One entry in the list
-  \item Another entry in the list
+  \item \code{type}: 
+  \item \code{null}: 
+  \item \code{vals}: 
+  \item \code{eifs}: 
   
 \end{itemize}
 
@@ -772,19 +783,25 @@ Objects returned from calls to \code{lmtp_tmle} or \code{lmtp_sdr} will contain:
 
 \begin{itemize}
 
-  \item One entry in the list
-  \item Another entry in the list
+  \item \code{trt}: A vector containing the names of the treatment variables ordered by time.
+  \item \code{tau}: An integer specifying the maximum time-point of the data generating mechanism.
+  \item \code{time_vary}: A list the same length as the number of time-points under observation.
+  The list should be ordered following the time ordering of the model.
+  Each index of the list should be a vector containing the names of the time-varying covariates
+  at that time-point. 
+  \item \code{baseline}: An optional vector containing the names of baseline covariates
+  to be included for adjustment at every time-point.
+  \item \code{k}: An integer controlling the Markov property of the data generating mechanism. If \code{k = Inf}
+  (default) the history \(H_t\) will contain all previous time-point variables. If \code{k = 0} the history will
+  only contain baseline variables and time-varying covariates at \(t - 1\).
   
 \end{itemize}
 
 \subsubsection{Returns}
 
-\begin{itemize}
-
-  \item One entry in the list
-  \item Another entry in the list
-  
-\end{itemize}
+A list of length two. Each index of the list will contain a list of length \(\tau\) with
+each index being a vector of the column names to be used for estimation at the corresponding
+time-point of either the outcome regression or treatment mechanism.
 
 \renewcommand\refname{References}
 \bibliography{lmtp.bib}
