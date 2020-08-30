@@ -72,21 +72,21 @@ on a population mean outcome under interventions that set the treatment
 value deterministically. For example, the average treatment effect (ATE)
 considers the hypothetical difference in a population mean outcome if a
 dichotomous exposure was applied to all observations versus if it was applied
-to none. In the case of a categorical or continuous exposure,
+to none. In the case of a continuous exposure,
 it is unlikely any policy could bring this about. Furthermore, the
 estimation of causal effects requires the so called positivity
 assumption which states that all observations have a greater than zero
-chance of experiencing the exposure levels
+chance of experiencing an exposure value
 \citep{rosenbaumCentralRolePropensity1983}. This assumption is often
 violated when evaluating the effects of deterministic interventions and
 is usually exacerbated with longitudinal data.
 
 First introduced by \citet{haneuseEstimationEffectInterventions2013},
 and building off work by \citet{munozPopulationInterventionCausal2012},
-modified treatment policies (MTPs) are stochastic treatment regimes that
+modified treatment policies (MTPs) are a class of stochastic treatment regimes that
 can be formulated to avoid violations of the positivity assumption.
-\citet{diazNonparametricCausalEffects2020a} later extended MTPs to the
-longitudinal setting with time-varying treatment, covariates, and
+\citet{diazNonparametricCausalEffects2020a} later generalized MTPs to the
+longitudinal setting, accounting for time-varying treatment, covariates, and
 right-censoring of the outcome.
 
 The package \pkg{lmtp} implements four methods for estimating the
@@ -98,8 +98,7 @@ kennedyNonparametricMethodsDoubly2017}, are multiply-robust. In addition to MTPs
 naturally allows for estimation of the ATE, causal risk ratio, and
 causal odds ratio and can thus be used for a variety of causal inference
 problems. In this article we describe how \pkg{lmtp} can be used for
-estimating the causal effects of MTPs and both static and dynamic
-deterministic treatment effects. The package may be download from CRAN
+estimating the causal effects of MTPs and deterministic treatment effects. The package may be download from CRAN
 at \url{cran.r-project.org/package=lmtp}.
 
 \hypertarget{notation-and-modified-treatment-policies}{%
@@ -249,19 +248,19 @@ recommend the following articles (INSERT THESE ARTICLES).
 
 Both TMLE and SDR are multiply-robust. Specifically, 
 TMLE is considered \(\tau + 1\)-multiply robust while SDR is
-robust under \(2^{\tau}\)-configurations. EXPLAIN WHAT THIS MEANS. 
+robust under \(2^{\tau}\)-configurations. Both TMLE and SDR are efficient when the treatment mechanism and outcome regression are consistently estimated.
 
-It is important to note that it is possible for the SDR to produce an estimate of \(\hat{\theta}\)
-outside of the bounds of the parameter space. Taking into account that for a single time-point
-the TMLE and SDR have equivalent robustness, we recommend use of TMLE for the case of a single time-point, 
-while we recommend use of SDR for the longitudinal setting. All examples in this article will use
-both estimators.
+EXPLAIN WHAT THIS MEANS. 
+
+It is important to note that the SDR estimator can produce an estimate of \(\hat{\theta}\)
+outside of the bounds of the parameter space. With this in mind and because for a single time-point TMLE and SDR are equally robust, we recommend use of TMLE for the case of a single time-point, 
+while we recommend use of SDR for the longitudinal setting. All examples in this article will demonstrate use of both estimators.
 
 \hypertarget{required-data-structure}{%
 \subsection{Required data structure}\label{required-data-structure}}
 
 Data is passed to \pkg{lmtp} estimators through the \code{data}
-argument, and should be in wide format with one column per variable per
+argument. Data should be in wide format with one column per variable per
 time point under study (i.e., there should be one column for every
 variable in \(Z\)). These columns do not have to be in any specific
 order and the data set may contain variables that won't be used in
@@ -276,14 +275,16 @@ according to the time-ordering of the model with each index containing
 the name of the time-varying covariates for the given time. The outcome
 variable is specified through the \code{outcome} argument.
 
-The provided estimators can work with dichotomous, continuous, or
+Estimators are compatible with continuous, dichotomous and
 survival outcomes. In the case of a dichotomous or continuous outcome,
 only a single variable name should be passed to the \code{outcome}
 argument. For survival outcomes, a vector containing the names of the
-intermediate outcome and final outcome variables ordered according to
-time should be passed to the \code{outcome} argument. Dichotomous and
+intermediate outcome and final outcome variables, ordered according to
+time, should be specified with the \code{outcome} argument. Dichotomous and
 survival outcomes should be coded using zero's and one's where one
-indicates the occurrence of an event and zero otherwise. The
+indicates the occurrence of an event and zero otherwise. If a survival outcome, 
+once an observation experiences an outcome, all future outcome variables should 
+also be coded with a one. The
 \code{outcome_type} argument should be set to \code{"continuous"} for
 continuous outcomes and \code{"binomial"} for dichotomous and survival
 outcomes. If missingness is present in the outcome variable, the
@@ -294,11 +295,11 @@ observation's censoring status is switched to zero it cannot change back
 to one. Missing data before an observation is lost-to-follow-up is not
 allowed.
 
-The \code{k} argument controls a Markov assumption of the data. With
-\code{k = Inf}, the entire history \(H_t\) will be used for estimation
-at time \(t\) while \code{k = 0} will restrict the set of variables in
-\(H_t\) used for estimation to time-varying covariates at time \(t - 1\). 
-Baseline confounders are always included in estimation. The 
+The \code{k} argument controls a Markov assumption of the data. When
+\code{k = Inf}, the history \(H_t\) will be constructed using all previous
+time-point variables while \code{k = 0} will restrict \(H_t\)
+to time-varying covariates at time \(t - 1\). 
+Baseline confounders are always included in \(H_t\). The 
 \code{create_node_list} function may be used to inspect how variables
 will be used for estimation. It is specified with the same \code{trt},
 \code{baseline}, \code{time_vary}, and \code{k} arguments as \pkg{lmtp}
@@ -344,8 +345,8 @@ $outcome[[2]]
 A list of lists is returned with the names of the variables in \(H_t\) to be used for estimation of
 the outcome regression and the treatment mechanism at every time \(t\).
 Notice that variables \(A_1\) and \(A_2\) are included for their own
-estimation. The \pkg{lmtp} package recasts the density ratio nuisance
-parameter estimation into a classification problem based on a \(2n\)
+estimation. The treatment mechanism nuisance
+parameter estimation is recast into a classification problem based on a \(2n\)
 observations augmented data set where an indicator variable \(\Lambda\)
 is used as a pseudo outcome
 \citep{chengSemiparametricDensityEstimation2004, qinInferencesCaseControlSemiparametric1998}.
@@ -356,7 +357,7 @@ redefined as
 (H_{\lambda, i, t}, A_{\lambda, i, t}, \Lambda_{\lambda, i} : \lambda = 0, 1; i = 1, ..., n)
 \end{equation}
 
-where \(\Lambda_{\lambda, i} = \lambda_i\) indexes the duplicate values.
+where \(\Lambda_{\lambda, i} = \lambda_i\) indexes duplicate values.
 For all duplicated observations \(i \in \{1, ..., 2n\}\),
 \(H_{\lambda, i, t}\) is the same. While, for \(i \in \{1, ..., n\}\)
 duplicated observations \(A_{0, i, t}\) are the observed exposure values
@@ -425,7 +426,7 @@ repository, it is not required to use \pkg{lmtp}. Instead, the \code{lrnrs_trt} 
 \code{lrnrs_outcomes} arguments can be set equal to
 \code{NULL} and nuisance parameters will be estimated using a
 generalized linear model (GLM) with the \code{glm} function from the
-\pkg{stats} package (INSERT STATS PACKAGE CITATION).
+\pkg{stats} package \citep{rcore}.
 
 \hypertarget{additional-arguments}{%
 \subsection{Additional arguments}\label{additional-arguments}}
@@ -434,7 +435,7 @@ Sample-splitting and cross-fitting is used with all methods \citep{zhengCrossVal
 of folds can be set with the \code{folds} argument; the minimum number of allowed folds is two.
 If data has a hierarchical structure, the \code{id} argument is used to indicate the name of a variable
 in the data set indicating unique groups. These identifiers will be used for generation of cross-validation 
-folds and will be accounted for in standard error calculations.
+folds and will be accounted for in standard error calculations. If a continuous outcome has known limits, these limits may be specified using the \code{bounds} argument with a length two numeric vector where the first index is the lower bound and the second index is the upper.
 
 \hypertarget{contrasts}{%
 \subsection{Contrasts}\label{contrasts}}
@@ -519,7 +520,7 @@ was simulated for three time points with a continuous time-varying
 exposure at times \(t \in \{1, 2\}\) (\code{A1}, \code{A2}), a
 dichotomous time-varying covariate at times \(t \in \{1, 2\}\)
 (\code{L1}, \code{L2}), and a dichotomous outcome (\code{Y}) at time
-\(t = 3\). Loss-to-follow-up is present after time \(t = 1\) so the data set
+\(\tau + 1 = 3\). Loss-to-follow-up is present after time \(t = 1\) so the data set
 contains censoring indicators (\code{C1}, \code{C2}). This data is
 installed with the package and is stored in the object \code{sim_cens}.
 
@@ -620,8 +621,8 @@ Null hypothesis: theta == 0
 \subsubsection{Example 3: Survival analysis and deterministic effects}\label{example-3-survival-analysis-and-deterministic-effects}}
 
 The \pkg{lmtp} package may also be used to estimate deterministic causal effects, such as the causal relative risk.
-Suppose we have data on \(n = 2000\) observations with a time-invariant binary exposure followed for a
-period of seven days. We wish to estimate the causal relative risk of experiencing an event by day seven. This data is
+Suppose we have time-to-event data on \(n = 2000\) observations with a time-invariant dichotomous exposure followed for a
+period of seven days. We wish to estimate the causal relative risk of experiencing the event by day seven. This data is
 installed with the package and is stored in the object \code{sim_point_surv}. 
 
 \begin{CodeChunk}

@@ -1,4 +1,4 @@
-\begin{thebibliography}{23}
+\begin{thebibliography}{24}
 \newcommand{\enquote}[1]{``#1''}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
@@ -160,6 +160,13 @@ Qin J (1998).
 \newblock ISSN 0006-3444.
 \newblock Publisher: [Oxford University Press, Biometrika Trust],
   \urlprefix\url{https://www.jstor.org/stable/2337391}.
+
+\bibitem[{{\proglang{R} Core Team}(2020)}]{rcore}
+{\proglang{R} Core Team} (2020).
+\newblock \emph{\proglang{R}: A Language and Environment for Statistical
+  Computing}.
+\newblock \proglang{R} Foundation for Statistical Computing, Vienna, Austria.
+\newblock \urlprefix\url{https://www.R-project.org/}.
 
 \bibitem[{Robinson and Hayes(2020)}]{broom}
 Robinson D, Hayes A (2020).

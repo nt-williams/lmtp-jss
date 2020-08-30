@@ -4,44 +4,44 @@ The top-level auxiliary file: lmtp.aux
 The style file: jss.bst
 Database file #1: lmtp.bib
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
-You've used 23 entries,
+You've used 24 entries,
             3215 wiz_defined-function locations,
-            843 strings with 12118 characters,
-and the built_in function-call counts, 22467 in all, are:
-= -- 2257
-> -- 514
-< -- 18
-+ -- 193
-- -- 168
-* -- 1671
-:= -- 2727
-add.period$ -- 132
-call.type$ -- 23
-change.case$ -- 164
-chr.to.int$ -- 24
-cite$ -- 23
-duplicate$ -- 2296
-empty$ -- 1772
-format.name$ -- 255
-if$ -- 4561
+            849 strings with 12303 characters,
+and the built_in function-call counts, 23235 in all, are:
+= -- 2340
+> -- 524
+< -- 19
++ -- 197
+- -- 171
+* -- 1717
+:= -- 2822
+add.period$ -- 136
+call.type$ -- 24
+change.case$ -- 169
+chr.to.int$ -- 25
+cite$ -- 24
+duplicate$ -- 2383
+empty$ -- 1836
+format.name$ -- 259
+if$ -- 4719
 int.to.chr$ -- 2
 int.to.str$ -- 1
-missing$ -- 250
-newline$ -- 170
-num.names$ -- 94
-pop$ -- 1016
+missing$ -- 256
+newline$ -- 176
+num.names$ -- 98
+pop$ -- 1055
 preamble$ -- 1
-purify$ -- 147
+purify$ -- 152
 quote$ -- 0
-skip$ -- 415
+skip$ -- 430
 stack$ -- 0
-substring$ -- 2158
-swap$ -- 652
+substring$ -- 2241
+swap$ -- 667
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 204
+type$ -- 213
 warning$ -- 0
-while$ -- 152
+while$ -- 156
 width$ -- 0
-write$ -- 406
+write$ -- 421
