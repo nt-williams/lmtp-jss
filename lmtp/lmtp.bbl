@@ -1,4 +1,4 @@
-\begin{thebibliography}{24}
+\begin{thebibliography}{30}
 \newcommand{\enquote}[1]{``#1''}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
@@ -8,6 +8,12 @@
   \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
   \urlstyle{rm}\Url}\fi
 \providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem[{Bang and Robins(2005)}]{bang2005doubly}
+Bang H, Robins JM (2005).
+\newblock \enquote{Doubly robust estimation in missing data and causal
+  inference models.}
+\newblock \emph{Biometrics}, \textbf{61}(4), 962--973.
 
 \bibitem[{Bengtsson(2020{\natexlab{a}})}]{future}
 Bengtsson H (2020{\natexlab{a}}).
@@ -32,16 +38,6 @@ Buckley J, James I (1979).
 \newblock Publisher: [Oxford University Press, Biometrika Trust],
   \urlprefix\url{https://www.jstor.org/stable/2335161}.
 
-\bibitem[{Cheng and Chu(2004)}]{chengSemiparametricDensityEstimation2004}
-Cheng KF, Chu CK (2004).
-\newblock \enquote{Semiparametric {Density} {Estimation} under a {Two}-{Sample}
-  {Density} {Ratio} {Model}.}
-\newblock \emph{Bernoulli}, \textbf{10}(4), 583--604.
-\newblock ISSN 1350-7265.
-\newblock Publisher: International Statistical Institute (ISI) and Bernoulli
-  Society for Mathematical Statistics and Probability,
-  \urlprefix\url{https://www.jstor.org/stable/3318817}.
-
 \bibitem[{Chernozhukov \emph{et~al.}(2018)Chernozhukov, Chetverikov, Demirer,
   Duflo, Hansen, Newey, and Robins}]{chernozhukovDoubleDebiasedMachine2018}
 Chernozhukov V, Chetverikov D, Demirer M, Duflo E, Hansen C, Newey W, Robins J
@@ -63,9 +59,18 @@ Coyle JR, Hejazi NS, Malenica I, Sofrygin O (2020).
 \newblock \proglang{R} package version 1.3.8,
   \urlprefix\url{https://github.com/tlverse/sl3}.
 
-\bibitem[{Diaz \emph{et~al.}(2020)Diaz, Williams, Hoffman, and
+\bibitem[{D{\'i}az and van~der
+  Laan(2012)}]{munozPopulationInterventionCausal2012}
+D{\'i}az I, van~der Laan M (2012).
+\newblock \enquote{Population intervention causal effects based on stochastic
+  interventions.}
+\newblock \emph{Biometrics}, \textbf{68}(2), 541--549.
+\newblock ISSN 1541-0420.
+\newblock \doi{10.1111/j.1541-0420.2011.01685.x}.
+
+\bibitem[{D\'iaz \emph{et~al.}(2020)D\'iaz, Williams, Hoffman, and
   Schenck}]{diazNonparametricCausalEffects2020a}
-Diaz I, Williams N, Hoffman KL, Schenck EJ (2020).
+D\'iaz I, Williams N, Hoffman KL, Schenck EJ (2020).
 \newblock \enquote{Non-parametric causal effects based on longitudinal modified
   treatment policies.}
 \newblock \emph{arXiv:2006.01366}.
@@ -106,18 +111,6 @@ Kennedy EH, Ma Z, McHugh MD, Small DS (2017).
 \newblock
   \urlprefix\url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5627792/}.
 
-\bibitem[{Laan \emph{et~al.}(2007)Laan, Polley, and
-  Hubbard}]{laanSuperLearner2007}
-Laan MJvd, Polley EC, Hubbard AE (2007).
-\newblock \enquote{Super {Learner}.}
-\newblock \emph{Statistical Applications in Genetics and Molecular Biology},
-  \textbf{6}(1).
-\newblock ISSN 1544-6115, 2194-6302.
-\newblock \doi{10.2202/1544-6115.1309}.
-\newblock Publisher: De Gruyter Section: Statistical Applications in Genetics
-  and Molecular Biology,
-  \urlprefix\url{https://www.degruyter.com/view/journals/sagmb/6/1/article-sagmb.2007.6.1.1309.xml.xml}.
-
 \bibitem[{Laan and Rose(2011)}]{laanTargetedLearningCausal2011a}
 Laan MJvd, Rose S (2011).
 \newblock \emph{Targeted {Learning}: {Causal} {Inference} for {Observational}
@@ -137,29 +130,35 @@ Laan MJvd, Rubin D (2006).
   Biostatistics,
   \urlprefix\url{https://www.degruyter.com/view/journals/ijb/2/1/article-ijb.2006.2.1.1043.xml.xml}.
 
+\bibitem[{Luedtke \emph{et~al.}(2017)Luedtke, Sofrygin, van~der Laan, and
+  Carone}]{luedtke2017sequential}
+Luedtke AR, Sofrygin O, van~der Laan MJ, Carone M (2017).
+\newblock \enquote{Sequential double robustness in right-censored longitudinal
+  models.}
+\newblock \emph{arXiv preprint arXiv:1705.02459}.
+
+\bibitem[{Mendes \emph{et~al.}(2018)Mendes, da~Silva, Ramires, Reichert,
+  Martins, Ferreira, and Tomasi}]{mendes2018metabolic}
+Mendes MdA, da~Silva I, Ramires V, Reichert F, Martins R, Ferreira R, Tomasi E
+  (2018).
+\newblock \enquote{Metabolic equivalent of task (METs) thresholds as an
+  indicator of physical activity intensity.}
+\newblock \emph{PloS one}, \textbf{13}(7), e0200701.
+
 \bibitem[{Milborrow(2019)}]{milborrowEarth}
 Milborrow S (2019).
 \newblock \emph{\pkg{earth}: Multivariate Adaptive Regression Splines}.
 \newblock \proglang{R} package version 5.1.2,
   \urlprefix\url{https://CRAN.R-project.org/package=earth}.
 
-\bibitem[{Muñoz and van~der
-  Laan(2012)}]{munozPopulationInterventionCausal2012}
-Muñoz ID, van~der Laan M (2012).
-\newblock \enquote{Population intervention causal effects based on stochastic
-  interventions.}
-\newblock \emph{Biometrics}, \textbf{68}(2), 541--549.
-\newblock ISSN 1541-0420.
-\newblock \doi{10.1111/j.1541-0420.2011.01685.x}.
-
-\bibitem[{Qin(1998)}]{qinInferencesCaseControlSemiparametric1998}
-Qin J (1998).
-\newblock \enquote{Inferences for {Case}-{Control} and {Semiparametric}
-  {Two}-{Sample} {Density} {Ratio} {Models}.}
-\newblock \emph{Biometrika}, \textbf{85}(3), 619--630.
-\newblock ISSN 0006-3444.
-\newblock Publisher: [Oxford University Press, Biometrika Trust],
-  \urlprefix\url{https://www.jstor.org/stable/2337391}.
+\bibitem[{Petersen \emph{et~al.}(2014)Petersen, Tran, Geng, Reynolds, Kambugu,
+  Wood, Bangsberg, Yiannoutsos, Deeks, and Martin}]{petersen2014delayed}
+Petersen ML, Tran L, Geng EH, Reynolds SJ, Kambugu A, Wood R, Bangsberg DR,
+  Yiannoutsos CT, Deeks SG, Martin JN (2014).
+\newblock \enquote{Delayed switch of antiretroviral therapy after virologic
+  failure associated with elevated mortality among HIV-infected adults in
+  Africa.}
+\newblock \emph{AIDS (London, England)}, \textbf{28}(14), 2097.
 
 \bibitem[{{\proglang{R} Core Team}(2020)}]{rcore}
 {\proglang{R} Core Team} (2020).
@@ -198,6 +197,13 @@ Rotnitzky A, Faraggi D, Schisterman E (2006).
 \newblock
   \urlprefix\url{http://www.tandfonline.com/doi/abs/10.1198/016214505000001339}.
 
+\bibitem[{Rotnitzky \emph{et~al.}(2017)Rotnitzky, Robins, and
+  Babino}]{rotnitzky2017multiply}
+Rotnitzky A, Robins J, Babino L (2017).
+\newblock \enquote{On the multiply robust estimation of the mean of the
+  g-functional.}
+\newblock \emph{arXiv preprint arXiv:1705.08582}.
+
 \bibitem[{Rubin and Laan(2006)}]{rubinDoublyRobustCensoring2006}
 Rubin D, Laan Mvd (2006).
 \newblock \enquote{Doubly {Robust} {Censoring} {Unbiased} {Transformations}.}
@@ -213,6 +219,35 @@ van~der Laan M, Dudoit S (2003).
   {Examples}.}
 \newblock \emph{U.C. Berkeley Division of Biostatistics Working Paper Series}.
 \newblock \urlprefix\url{https://biostats.bepress.com/ucbbiostat/paper130}.
+
+\bibitem[{van~der Laan and Gruber(2011)}]{van2011targeted}
+van~der Laan MJ, Gruber S (2011).
+\newblock \enquote{Targeted minimum loss based estimation of an intervention
+  specific mean outcome.}
+
+\bibitem[{van~der Laan \emph{et~al.}(2007)van~der Laan, Polley, and
+  Hubbard}]{laanSuperLearner2007}
+van~der Laan MJ, Polley EC, Hubbard AE (2007).
+\newblock \enquote{Super {Learner}.}
+\newblock \emph{Statistical Applications in Genetics and Molecular Biology},
+  \textbf{6}(1).
+\newblock ISSN 1544-6115, 2194-6302.
+\newblock \doi{10.2202/1544-6115.1309}.
+\newblock Publisher: De Gruyter Section: Statistical Applications in Genetics
+  and Molecular Biology,
+  \urlprefix\url{https://www.degruyter.com/view/journals/sagmb/6/1/article-sagmb.2007.6.1.1309.xml.xml}.
+
+\bibitem[{{van der Laan} and Rose(2011)}]{vanderLaanRose11}
+{van der Laan} MJ, Rose S (2011).
+\newblock \emph{Targeted Learning: Causal Inference for Observational and
+  Experimental Data}.
+\newblock Springer, New York.
+
+\bibitem[{{van der Laan} and Rose(2018)}]{vanderLaanRose18}
+{van der Laan} MJ, Rose S (2018).
+\newblock \emph{Targeted Learning in Data Science: Causal Inference for Complex
+  longitudinal Studies}.
+\newblock Springer, New York.
 
 \bibitem[{Wright and Ziegler(2017)}]{wrightRanger}
 Wright MN, Ziegler A (2017).
