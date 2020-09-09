@@ -512,7 +512,7 @@ our technical paper  \citep{diazNonparametricCausalEffects2020a}.
 \hypertarget{creating-treatment-policies}{%
 \subsection{Creating treatment policies}\label{creating-treatment-policies}}
 
-Modified treatment policies are specified using the \code{shift} argument, which
+Modified treatment policies and deterministic static/dynamic treatment rules are specified using the \code{shift} argument, which
 accepts a user-defined function that returns a vector of exposure values
 modified according to the policy of interest. Shift functions should take two
 arguments, the first for specifying a data set and the second for
@@ -532,7 +532,7 @@ R+ }
 \end{CodeChunk}
 
 This framework is flexible and allows for specifying complex treatment
-regimes that can also depend on time and covariates. In the case of a
+regimes that can depend on time and covariates. In the case of a
 binary exposure, two shift functions are installed with
 the package: \code{static_binary_on} which sets \(A_{i, t} = 1\), and
 \code{static_binary_off} which sets \(A_{i, t} = 0\).
