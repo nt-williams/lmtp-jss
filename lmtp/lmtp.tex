@@ -509,9 +509,8 @@ corresponding estimate of the conditional probability that
 $\Delta=0$. An explanation of why this algorithm works may be found in
 our technical paper  \citep{diazNonparametricCausalEffects2020a}.
 
-\hypertarget{creating-modified-treatment-policies}{%
-\subsection{Creating modified treatment
-policies}\label{creating-modified-treatment-policies}}
+\hypertarget{creating-treatment-policies}{%
+\subsection{Creating treatment policies}\label{creating-treatment-policies}}
 
 Modified treatment policies are specified using the \code{shift} argument, which
 accepts a user-defined function that returns a vector of exposure values
@@ -632,14 +631,14 @@ MTP shift function.
 \begin{CodeChunk}
 
 \begin{CodeInput}
-R> trt <- c("A_1", "A_2", "A_3", "A_4")
-R> time_vary <- list(c("L_1"), c("L_2"), c("L_3"), c("L_4"))
+R> x <- c("A_1", "A_2", "A_3", "A_4")
+R> tv <- list(c("L_1"), c("L_2"), c("L_3"), c("L_4"))
 R> y <- "Y"
 R> shift <- function(data, trt) {
 R+   (data[[trt]] - 1) * (data[[trt]] - 1 >= 1) + 
 R+     data[[trt]] * (data[[trt]] - 1 < 1)
 R+ }
-R> lmtp_tmle(sim_t4, trt, y, time_vary = time_vary, shift = shift)
+R> lmtp_tmle(sim_t4, x, y, time_vary = tv, shift = shift)
 \end{CodeInput}
 
 \begin{CodeOutput}
@@ -653,7 +652,7 @@ Population intervention effect
 \end{CodeOutput}
 
 \begin{CodeInput}
-R> lmtp_sdr(sim_t4, trt, y, time_vary = time_vary, shift = shift)
+R> lmtp_sdr(sim_t4, x, y, time_vary = tv, shift = shift)
 \end{CodeInput}
 
 \begin{CodeOutput}
@@ -692,25 +691,25 @@ and multivariate adaptive regression splines \citep{milborrowEarth}.
 \begin{CodeChunk}
 
 \begin{CodeInput}
-R> trt <- c("A1", "A2")
+R> x <- c("A1", "A2")
 R> cen <- c("C1", "C2")
-R> time_vary <- list(c("L1"), c("L2"))
+R> tv <- list(c("L1"), c("L2"))
 R> y <- "Y"
-R> mtp <- function(data, trt) {
+R> shift <- function(data, trt) {
 R+   data[[trt]] + 0.5
 R+ }
 R> lrnrs <- make_learner_stack(Lrnr_glm,
 R+                             Lrnr_ranger, 
 R+                             Lrnr_earth)
-R> tml <- lmtp_tmle(sim_cens, trt, y, time_vary = time_vary, 
-R+                  cens = cen, shift = mtp, learners_trt = lrnrs, 
+R> tml <- lmtp_tmle(sim_cens, x, y, time_vary = tv, 
+R+                  cens = cen, shift = shift, learners_trt = lrnrs, 
 R+                  learners_outcome = lrnrs, folds = 3)
 R> print(tml)
 \end{CodeInput}
 
 \begin{CodeOutput}
 LMTP Estimator: TMLE
-   Trt. Policy: (mtp)
+   Trt. Policy: (shift)
 
 Population intervention effect
       Estimate: 0.9011
@@ -719,15 +718,15 @@ Population intervention effect
 \end{CodeOutput}
 
 \begin{CodeInput}
-R> sdr <- lmtp_sdr(sim_cens, trt, y, time_vary = time_vary, 
-R+                 cens = cen, shift = mtp, learners_trt = lrnrs, 
+R> sdr <- lmtp_sdr(sim_cens, x, y, time_vary = tv, 
+R+                 cens = cen, shift = shift, learners_trt = lrnrs, 
 R+                 learners_outcome = lrnrs, folds = 3)
 R> print(sdr)
 \end{CodeInput}
 
 \begin{CodeOutput}
 LMTP Estimator: SDR
-   Trt. Policy: (mtp)
+   Trt. Policy: (shift)
 
 Population intervention effect
       Estimate: 0.8995
@@ -746,7 +745,7 @@ effect of the MTP compared to the observed exposures.
 \begin{CodeChunk}
 
 \begin{CodeInput}
-R> tml_obs <- lmtp_tmle(sim_cens, trt, y, time_vary = time_vary, 
+R> tml_obs <- lmtp_tmle(sim_cens, x, y, time_vary = tv, 
 R+                      cens = cen, shift = NULL, learners_trt = lrnrs, 
 R+                      learners_outcome = lrnrs, folds = 3)
 R> lmtp_contrast(tml, ref = tml_obs)
@@ -761,7 +760,7 @@ Null hypothesis: theta == 0
 \end{CodeOutput}
 
 \begin{CodeInput}
-R> sdr_obs <- lmtp_sdr(sim_cens, trt, y, time_vary = time_vary, 
+R> sdr_obs <- lmtp_sdr(sim_cens, x, y, time_vary = tv, 
 R+                     cens = cen, shift = NULL, learners_trt = lrnrs, 
 R+                     learners_outcome = lrnrs, folds = 3)
 R> lmtp_contrast(sdr, ref = sdr_obs)
@@ -788,14 +787,14 @@ installed with the package and is stored in the object \code{sim_point_surv}.
 \begin{CodeChunk}
 
 \begin{CodeInput}
-R> trt <- "trt"
-R> baseline <- c("W1", "W2")
-R> cens <- paste0("C.", 0:5)
+R> x <- "trt"
+R> w <- c("W1", "W2")
+R> cen <- paste0("C.", 0:5)
 R> y <- paste0("Y.", 1:6)
-R> tml1 <- lmtp_tmle(sim_point_surv, trt, y, baseline, cens = cens, 
+R> tml1 <- lmtp_tmle(sim_point_surv, x, y, w, cens = cen, 
 R+                   learners_trt = lrnrs, learners_outcome = lrnrs,
 R+                   shift = static_binary_on, folds = 3)
-R> tml0 <- lmtp_tmle(sim_point_surv, trt, y, baseline, cens = cens, 
+R> tml0 <- lmtp_tmle(sim_point_surv, x, y, w, cens = cen, 
 R+                   learners_trt = lrnrs, learners_outcome = lrnrs,
 R+                   shift = static_binary_off, folds = 3)
 R> lmtp_contrast(tml1, ref = tml0, type = "rr")
@@ -810,10 +809,10 @@ Null hypothesis: theta == 1
 \end{CodeOutput}
 
 \begin{CodeInput}
-R> sdr1 <- lmtp_sdr(sim_point_surv, trt, y, baseline, cens = cens, 
+R> sdr1 <- lmtp_sdr(sim_point_surv, x, y, w, cens = cen, 
 R+                 learners_trt = lrnrs, learners_outcome = lrnrs,
 R+                 shift = static_binary_on, folds = 3)
-R> sdr0 <- lmtp_sdr(sim_point_surv, trt, y, baseline, cens = cens, 
+R> sdr0 <- lmtp_sdr(sim_point_surv, x, y, w, cens = cen, 
 R+                 learners_trt = lrnrs, learners_outcome = lrnrs,
 R+                 shift = static_binary_off, folds = 3)
 R> lmtp_contrast(sdr1, ref = sdr0, type = "rr")
@@ -825,6 +824,53 @@ Null hypothesis: theta == 1
 
   theta shift   ref std.error conf.low conf.high p.value
 1  1.21 0.809 0.667    0.0338     1.14       1.3  <0.001
+\end{CodeOutput}
+
+\end{CodeChunk}
+
+\hypertarget{example-4-dynamic-treatment-regimes}{%
+\subsubsection{Example 4: Dynamic treatment regimes}\label{example-4-dynamic-treatment-regimes}}
+
+Dynamic treatment regimes are treatment rules where treatment is applied based on a fixed rule that depends on covariate history. The \pkg{lmtp} package is capable of estimating the effects of both deterministic dynamic treatment rules as well as dynamic modified treatment policies. 
+
+For this example we will use the same data from example 1. However, we will extend the longitudinal MTP used in that example so that a shift in the exposure also depends on covariate history and time. Specifically, if $t = 1$ exposure decreases by one if an observation's realized exposure wouldn’t be less than one if modified. If $t > 1$ and the value of the time-varying covariate at that time-point equals one then exposure should decrease by one if an observation's realized exposure wouldn’t be less than one if modified; otherwise exposure shouldn't be modified.
+
+\begin{CodeChunk}
+
+\begin{CodeInput}
+R> x <- c("A_1", "A_2", "A_3", "A_4")
+R> tv <- list(c("L_1"), c("L_2"), c("L_3"), c("L_4"))
+R> y <- "Y"
+R> shift <- function(data, trt) {
+R+   (data[[trt]] - 1) * (data[[trt]] - 1 >= 1) + 
+R+     data[[trt]] * (data[[trt]] - 1 < 1)
+R+ }
+R> dynamic_shift <- function(data, trt) {
+R+   if (trt == "A_1") {
+R+     shift(data, trt)
+R+   } else {
+R+     ifelse(data[[sub("A", "L", trt)]] == 1, 
+R+            shift(data, trt),
+R+            data[[trt]])
+R+   }
+R+ }
+R> tml <- lmtp_tmle(sim_t4, x, y, time_vary = tv, shift = dynamic_shift, folds = 3, 
+R+                   learners_outcome = lrnrs, learners_trt = lrnrs)
+R> print(tml)
+\end{CodeInput}
+
+\begin{CodeOutput}
+LMTP Estimator: TMLE   Trt. Policy: (dynamic_shift)Population intervention effect      Estimate: 0.3246    Std. error: 0.0097        95% CI: (0.3055, 0.3437)
+\end{CodeOutput}
+
+\begin{CodeInput}
+R> sdr <- lmtp_sdr(sim_t4, x, y, time_vary = tv, shift = dynamic_shift, folds = 3, 
+R+                 learners_outcome = lrnrs, learners_trt = lrnrs)
+R> print(sdr)
+\end{CodeInput}
+
+\begin{CodeOutput}
+LMTP Estimator: SDR   Trt. Policy: (dynamic_shift)Population intervention effect      Estimate: 0.3177    Std. error: 0.0099        95% CI: (0.2983, 0.3371)
 \end{CodeOutput}
 
 \end{CodeChunk}
