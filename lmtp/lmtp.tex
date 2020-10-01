@@ -60,7 +60,7 @@ Effects for Longitudinal Studies}
 %% \Acceptdate{2012-06-04}
 
 \Address{
-  Nicholas Williams, MPH\\
+  Nicholas Williams and Iv\'an D\'iaz\\
   Division of Biostatistics\\
   Department of Population Health Sciences\\ 
   Weill Cornell Medicine\\
@@ -303,8 +303,8 @@ Briefly, the following standard assumptions must hold
 
 The consistency assumption states that the potential outcome for an
 observation under their observed exposure is the value of the outcome
-that we did actually observe. Assumption~\ref{ass:ex}, the
-exchangeability assumption, is often also referred to as the
+that we did actually observe. The
+exchangeability assumption is often also referred to as the
 no-unmeasured confounding assumption; it is satisfied if all common
 causes of the exposure and outcome are measured and adjusted for. Of
 particular importance to this article is the positivity assumption
@@ -315,10 +315,10 @@ if an observation with covariate history \(h_t\) and exposure \(a_t\)
 who was not lost-to-follow-up at time \(t\) exists then there is also
 an observation with covariate history \(h_t\) who was not
 lost-to-follow-up at time \(t\) but whose exposure was observed as
-\(d(a_t, h_t)\) that also exists. which is often an This assumption is
+\(d(a_t, h_t)\) that also exists. This assumption is
 often an issue when working with continuous exposures and/or multiple
 time points in the context of static or dynamic interventions. One
-strength of MTPs is that.  support of the exposure variable is known,
+strength of MTPs is that if the support of the exposure variable is known,
 then they may be formulated to avoid violations of the positivity
 assumption.%
 
@@ -381,7 +381,7 @@ TMLE and SDR require estimation of two nuisance parameters at each
 time point: an outcome mechanism and an intervention mechanism. Both
 TMLE and SDR are multiply-robust in that they allow certain
 configurations of nuisance parameters to be inconsistently
-estimated. Specifically, TMLE is considered \(\tau + 1\)-multiply in
+estimated. Specifically, TMLE is considered \(\tau + 1\)-multiply robust in
 that it allows for inconsistent estimation of all the intervention
 mechanisms prior to any time point $t$, as long as all outcome
 mechanisms after time $t$ are consistently estimated. SDR is
@@ -675,7 +675,13 @@ R> lmtp_tmle(sim_t4, x, y, time_vary = tv, shift = shift)
 \end{CodeInput}
 
 \begin{CodeOutput}
-LMTP Estimator: TMLE   Trt. Policy: (shift)Population intervention effect      Estimate: 0.2648    Std. error: 0.0189        95% CI: (0.2277, 0.3018)
+LMTP Estimator: TMLE
+   Trt. Policy: (shift)
+
+Population intervention effect
+      Estimate: 0.2648
+    Std. error: 0.0189
+        95% CI: (0.2277, 0.3018)
 \end{CodeOutput}
 
 \begin{CodeInput}
@@ -683,7 +689,13 @@ R> lmtp_sdr(sim_t4, x, y, time_vary = tv, shift = shift)
 \end{CodeInput}
 
 \begin{CodeOutput}
-LMTP Estimator: SDR   Trt. Policy: (shift)Population intervention effect      Estimate: 0.2612    Std. error: 0.0187        95% CI: (0.2246, 0.2978)
+LMTP Estimator: SDR
+   Trt. Policy: (shift)
+
+Population intervention effect
+      Estimate: 0.2612
+    Std. error: 0.0187
+        95% CI: (0.2246, 0.2978)
 \end{CodeOutput}
 
 \end{CodeChunk}
@@ -729,7 +741,13 @@ R> print(tml)
 \end{CodeInput}
 
 \begin{CodeOutput}
-LMTP Estimator: TMLE   Trt. Policy: (shift)Population intervention effect      Estimate: 0.9013    Std. error: 0.0095        95% CI: (0.8827, 0.92)
+LMTP Estimator: TMLE
+   Trt. Policy: (shift)
+
+Population intervention effect
+      Estimate: 0.9013
+    Std. error: 0.0095
+        95% CI: (0.8827, 0.92)
 \end{CodeOutput}
 
 \begin{CodeInput}
@@ -740,7 +758,13 @@ R> print(sdr)
 \end{CodeInput}
 
 \begin{CodeOutput}
-LMTP Estimator: SDR   Trt. Policy: (shift)Population intervention effect      Estimate: 0.899    Std. error: 0.0096        95% CI: (0.8802, 0.9178)
+LMTP Estimator: SDR
+   Trt. Policy: (shift)
+
+Population intervention effect
+      Estimate: 0.899
+    Std. error: 0.0096
+        95% CI: (0.8802, 0.9178)
 \end{CodeOutput}
 
 \end{CodeChunk}
@@ -761,7 +785,11 @@ R> lmtp_contrast(tml, ref = tml_obs)
 \end{CodeInput}
 
 \begin{CodeOutput}
-  LMTP Contrast: additiveNull hypothesis: theta == 0  theta shift   ref std.error conf.low conf.high p.value1 0.104 0.901 0.798   0.00617   0.0917     0.116  <0.001
+  LMTP Contrast: additive
+Null hypothesis: theta == 0
+
+  theta shift   ref std.error conf.low conf.high p.value
+1 0.104 0.901 0.798   0.00617   0.0917     0.116  <0.001
 \end{CodeOutput}
 
 \begin{CodeInput}
@@ -772,7 +800,11 @@ R> lmtp_contrast(sdr, ref = sdr_obs)
 \end{CodeInput}
 
 \begin{CodeOutput}
-  LMTP Contrast: additiveNull hypothesis: theta == 0  theta shift   ref std.error conf.low conf.high p.value1 0.101 0.899 0.798   0.00611   0.0886     0.113  <0.001
+  LMTP Contrast: additive
+Null hypothesis: theta == 0
+
+  theta shift   ref std.error conf.low conf.high p.value
+1 0.101 0.899 0.798   0.00611   0.0886     0.113  <0.001
 \end{CodeOutput}
 
 \end{CodeChunk}
@@ -802,7 +834,11 @@ R> lmtp_contrast(tml1, ref = tml0, type = "rr")
 \end{CodeInput}
 
 \begin{CodeOutput}
-  LMTP Contrast: relative riskNull hypothesis: theta == 1  theta shift   ref std.error conf.low conf.high p.value1  1.22  0.81 0.664    0.0339     1.14       1.3  <0.001
+  LMTP Contrast: relative risk
+Null hypothesis: theta == 1
+
+  theta shift   ref std.error conf.low conf.high p.value
+1  1.22  0.81 0.664    0.0339     1.14       1.3  <0.001
 \end{CodeOutput}
 
 \begin{CodeInput}
@@ -816,7 +852,11 @@ R> lmtp_contrast(sdr1, ref = sdr0, type = "rr")
 \end{CodeInput}
 
 \begin{CodeOutput}
-  LMTP Contrast: relative riskNull hypothesis: theta == 1  theta shift   ref std.error conf.low conf.high p.value1  1.21 0.812 0.671     0.034     1.13      1.29  <0.001
+  LMTP Contrast: relative risk
+Null hypothesis: theta == 1
+
+  theta shift   ref std.error conf.low conf.high p.value
+1  1.21 0.812 0.671     0.034     1.13      1.29  <0.001
 \end{CodeOutput}
 
 \end{CodeChunk}
@@ -824,7 +864,7 @@ R> lmtp_contrast(sdr1, ref = sdr0, type = "rr")
 \hypertarget{example-4-dynamic-treatment-regimes}{%
 \subsubsection{Example 4: Dynamic treatment regimes}\label{example-4-dynamic-treatment-regimes}}
 
-Dynamic treatment regimes are treatment rules where treatment is applied based on a fixed rule that depends on covariate history. The \pkg{lmtp} package is capable of estimating the effects of both deterministic dynamic treatment rules as well as dynamic modified treatment policies. 
+Dynamic treatment regimes are treatment rules where treatment is applied based on a fixed rule that depends on covariate history. The \pkg{lmtp} package is capable of estimating the effects of deterministic dynamic treatment rules and modified treatment policies that depend on covariate history. 
 
 For this example we will use the same data from example 1. However, we will extend the longitudinal MTP used in that example so that a shift in the exposure also depends on covariate history and time. Specifically, if $t = 1$ exposure decreases by one if an observation's realized exposure wouldn’t be less than one if modified. If $t > 1$ and the value of the time-varying covariate at that time-point equals one then exposure should decrease by one if an observation's realized exposure wouldn’t be less than one if modified; otherwise exposure shouldn't be modified.
 
@@ -852,7 +892,13 @@ R+           learners_outcome = lrnrs, learners_trt = lrnrs)
 \end{CodeInput}
 
 \begin{CodeOutput}
-LMTP Estimator: TMLE   Trt. Policy: (dynamic_shift)Population intervention effect      Estimate: 0.3246    Std. error: 0.0097        95% CI: (0.3055, 0.3437)
+LMTP Estimator: TMLE
+   Trt. Policy: (dynamic_shift)
+
+Population intervention effect
+      Estimate: 0.3246
+    Std. error: 0.0097
+        95% CI: (0.3055, 0.3437)
 \end{CodeOutput}
 
 \begin{CodeInput}
@@ -861,7 +907,13 @@ R+          learners_outcome = lrnrs, learners_trt = lrnrs)
 \end{CodeInput}
 
 \begin{CodeOutput}
-LMTP Estimator: SDR   Trt. Policy: (dynamic_shift)Population intervention effect      Estimate: 0.3177    Std. error: 0.0099        95% CI: (0.2983, 0.3371)
+LMTP Estimator: SDR
+   Trt. Policy: (dynamic_shift)
+
+Population intervention effect
+      Estimate: 0.3177
+    Std. error: 0.0099
+        95% CI: (0.2983, 0.3371)
 \end{CodeOutput}
 
 \end{CodeChunk}
