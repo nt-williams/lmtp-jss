@@ -4,6 +4,10 @@
 \usepackage{amsmath}
 \usepackage{sansmath}
 \newcommand{\Q}{\mathsf{m}}
+\renewcommand{\r}{\mathsf{r}}
+\newcommand{\g}{\mathsf{g}}
+\renewcommand{\P}{\mathsf{P}}
+\newcommand{\p}{\mathsf{p}}
 
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
@@ -94,27 +98,28 @@ regimes that can be formulated to avoid the above problems
 \citep{munozPopulationInterventionCausal2012,
   haneuseEstimationEffectInterventions2013}. In a recent article
 \citep{diazNonparametricCausalEffects2020a}, we generalized the
-theoretical framework for MTPs to the longitudinal setting, accounting
-for time-varying treatment, covariates, and right-censoring of the
-outcome. Briefly, MTPs are hypothetical interventions where the
-post-intervention value of treatment can depend on the actual observed
-treatment level and the unit's history. As such, MTPs are useful to
-assess the effect of continuous treatments. For example,
+theoretical framework for estimation of the effect of MTPs to the
+longitudinal setting, accounting for time-varying treatment,
+covariates, and right-censoring of the outcome. Briefly, MTPs are
+hypothetical interventions where the post-intervention value of
+treatment can depend on the actual observed treatment level and the
+unit's history. As such, MTPs are useful to assess the effect of
+continuous treatments. For example,
 \citet{haneuseEstimationEffectInterventions2013} assess the effect of
 reducing surgery time by a predetermined amount (e.g., 5 minutes) for
 lung cancer patients, where the reduction is carried out only for
 those patients for whom the intervention is feasible. Furthermore,
 MTPs generalize many important effect estimands, such as the effect of
-a dynamic treatment rule in which the treatment level is assigned only
-as a function of a unit's history. For example, dynamic treatment
-rules, a particular case of MTPs, may be used to estimate the effect
-of policies such as switching HIV treatment once the CD4 T-cell count
+a dynamic treatment rule in which the treatment level is assigned as a
+function of a unit's history. For example, dynamic treatment rules, a
+particular case of MTPs, may be used to estimate the effect of
+policies such as switching HIV treatment once the CD4 T-cell count
 goes below a predetermined threshold \citep{petersen2014delayed}. MTPs
 also generalize many interesting causal effects such as the average
 treatment effects, the causal risk ratio, and causal odds ratio. In
 this article we describe how \pkg{lmtp} can be used for estimating the
-causal effects of MTPs, and present examples on using the software on
-several of the above cases.
+causal effects of MTPs, and present examples on the use of the
+software for several of the above cases.
 
 The package \pkg{lmtp} implements four methods for estimating the
 effects of MTPs. Two of these estimators, a targeted minimum-loss
@@ -195,8 +200,8 @@ with loss-to-follow-up. Let \(A_t = (A_{1, t}, A_{2, t})\) where
 \(A_{1, t}\) equals one if an observation is still in the study at
 time \(t\) and zero otherwise, and \(A_{2, t}\) denote a continuous
 exposure at time \(t\) that can be changed through some
-intervention. A modified treatment policy that increases \(A_{2,t}\)
-whenever it is feasible is then
+intervention. A modified treatment policy that increases \(A_{2,t}\),
+whenever it is feasible to do so, can be defined as
 
 \begin{equation}\label{eq:mtp}
 d_t(a_t,h_t)=
@@ -222,7 +227,7 @@ study where two different antiviral treatments are administered to HIV
 positive patients. Sometimes an antiviral drug works at first, until
 the virus develops resistance, at which point it is necessary to
 change the treatment regime. Assume we are interested in assessing a
-policy with two treatments encoded as $A_t\{0,1\}$, and we want to
+policy with two treatments encoded as $A_t\in \{0,1\}$, and we want to
 assess the effect of a regime that would switch the antiviral
 treatment as soon as the CD4 T cell count drops bellow 300. Let
 \(A_t = (A_{1, t}, A_{2, t})\) where \(A_{1, t}\) equals one if an
@@ -240,19 +245,20 @@ to assess the effect of the rule
 
 In contrast to the previous rule (\ref{eq:mtp}), the dynamic treatment
 rule (\ref{eq:dyn}) does not depend on the natural value of treatment
-at time $t$, it only depends on the history. This induces certain
-technicalities in the estimation procedure for true MTPs that depend
-on the natural value of treatment
-\citep{diazNonparametricCausalEffects2020a}. However, the software
-presented here handles both cases seamlessly.
+at time $t$, it only depends on the history. % This induces certain
+% technicalities in the estimation procedure for true MTPs that depend
+% on the natural value of treatment
+% \citep{diazNonparametricCausalEffects2020a}. However, t
+The software and methods presented here handle both cases seamlessly.
 
-It follows trivially from the above definitions that the average
-treatment effect from a cross-sectional study can be estimated using
-MTPs by simply letting $\tau = 1$ and contrasting two MTPs $d(A)=1$
-and $d(A)=0$. The \pkg{lmtp} package presented in this article allows
-the contrast of different MTPs using differences, ratios, and odds
-ratios. We provide examples of each of these contrasts in \S
-\ref{examples} below.
+In the case of a single time point setting where the data structure is
+$Z=(W,A,Y)$, it follows trivially from the above definitions that the
+average treatment effect from a cross-sectional study, defined as
+$\E[Y(1) - Y(0)]$, can be estimated using MTPs by simply letting
+$\tau = 1$ and contrasting two MTPs $d(A)=1$ and $d(A)=0$. The
+\pkg{lmtp} package presented in this article allows the contrast of
+different MTPs using differences, ratios, and odds ratios. We provide
+examples of each of these contrasts in \S \ref{examples} below.
 
 In what follows we focus on estimating the the causal effect of MTP \(d\) on
 outcome \(Y\), using \pkg{lmtp}, through the causal parameter
@@ -271,45 +277,50 @@ end of the study, \(\theta\) is defined as the cumulative incidence of
 \hypertarget{identification}{%
 \subsection{Identification}\label{identification}}
 
-Our ability to estimate \(\theta\) depends on the ability to
-identifying an expression for \(\theta\) as a function of the data
-generating distribution \(\Prob\) using only the observed data \(Z\)
-and not counterfactual variables $Y^d$. A full review of these
-identification assumptions is outside the scope of this article but is
-presented in our technical paper
-\citep{diazNonparametricCausalEffects2020a}.  Briefly, the following
-standard assumptions must hold
+The ability to estimate \(\theta\) depends on the ability to identify
+an expression for \(\theta\) as a function of the data generating
+distribution \(\Prob\) using only the observed data \(Z\) and not
+counterfactual variables $Y^d$. A full review of these identification
+assumptions is outside the scope of this article but is presented in
+our technical paper \citep{diazNonparametricCausalEffects2020a}.
+Briefly, the following standard assumptions must hold
 
 \newtheorem{assumption}{Assumption}
 
-\begin{assumption}[Consistency]
+\begin{assumption}[Consistency]\label{ass:cons}
 \(\bar{A} = \bar{a} \implies Y = Y(\bar{a})\) for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$ 
 \end{assumption}
-\begin{assumption}[Exchangeability]
-If $(a_t, h_t) \in \mathop{\mathrm{supp}}\{A_t, H_t\}$ then $(d(a_t, h_t), h_t) \in \mathop{\mathrm{supp}}\{A_t, H_t\}$ for $t \in \{1, ..., \tau \}$
+\begin{assumption}[Exchangeability]\label{ass:ex}
+  $A_t \perp \!\!\! \perp Y(\bar{a}) | H_t$ for all
+  $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$ and
+  $t \in \{1, ..., \tau\}$
 \end{assumption}
-\begin{assumption}[Positivity]
-$A_t \perp \!\!\! \perp Y(\bar{a}) | H_t$ for all $\bar{a} \in \mathop{\mathrm{supp}}\bar{A}$ and $t \in \{1, ..., \tau\}$
+\begin{assumption}[Positivity]\label{ass:pos}
+  If $(a_t, h_t) \in \mathop{\mathrm{supp}}\{A_t, H_t\}$ then
+  $(d(a_t, h_t), h_t) \in \mathop{\mathrm{supp}}\{A_t, H_t\}$ for
+  $t \in \{1, ..., \tau \}$
 \end{assumption}
 
 The consistency assumption states that the potential outcome for an
 observation under their observed exposure is the value of the outcome
-that we did actually observe. Assumption 2, the exchangeability
-assumption, is often also referred to as the no-unmeasured confounding
-assumption; it is satisfied if all common causes of the exposure and
-outcome are measured and adjusted for. Of particular importance to
-this article is the positivity assumption which states that the
-distribution of the exposure under the MTP is supported in the
-data. Concretely, in a study with a continuous exposure and
-loss-to-follow-up, the positivity assumption states that if an
-observation with covariate history \(h_t\) and exposure \(a_t\) who
-was not lost-to-follow-up at time \(t\) exists then there is also an
-observation with covariate history \(h_t\) who was not
+that we did actually observe. Assumption~\ref{ass:ex}, the
+exchangeability assumption, is often also referred to as the
+no-unmeasured confounding assumption; it is satisfied if all common
+causes of the exposure and outcome are measured and adjusted for. Of
+particular importance to this article is the positivity assumption
+which states that the distribution of the exposure under the MTP is
+supported in the data. Concretely, in a study with a continuous
+exposure and loss-to-follow-up, the positivity assumption states that
+if an observation with covariate history \(h_t\) and exposure \(a_t\)
+who was not lost-to-follow-up at time \(t\) exists then there is also
+an observation with covariate history \(h_t\) who was not
 lost-to-follow-up at time \(t\) but whose exposure was observed as
-\(d(a_t, h_t)\) that also exists. The strength of MTPs is that they
-may be formulated to avoid violations of the positivity assumption,
-which is often an issue when working with continuous exposures and/or
-multiple time points.
+\(d(a_t, h_t)\) that also exists. which is often an This assumption is
+often an issue when working with continuous exposures and/or multiple
+time points in the context of static or dynamic interventions. One
+strength of MTPs is that.  support of the exposure variable is known,
+then they may be formulated to avoid violations of the positivity
+assumption.%
 
 Under these identification assumptions, the causal parameter $\theta$
 is identified as follows. Set $\Q_{\tau+1}= Y$. For $t=\tau,\ldots,1$,
@@ -319,7 +330,19 @@ recursively define
     A_t=a_t, H_t=h_t\right].\label{eq:defQ}
 \end{equation} Then $\theta$ is identified as
 $\E[\Q_1(A_1^d, L_1)]$.
-
+In addition to the function $\Q_t$, the description of the estimation
+methods below will benefit from the definition of the ratio bewteen
+the density of the post-intervention exposure, $A_t^d$, and the
+density of the observed exposure, $A_t$. That is, define $\g_t^d(a_t\mid
+h_t)$ as the density of $A_t^d$ conditional on $H_t=h_t$ evaluated at
+$h_t$. Likewise define $\g_t(a_t\mid h_t)$ as the conditional density
+of $A_t$. Our estimation procedure will make use of the density ratio
+defined as:
+\[\r_t(a_t, h_t) = \frac{\g_t^d(a_t\mid
+    h_t)}{\g_t(a_t\mid h_t)}.\]
+This density ratio reduces to the well-known inverse probability
+weights used in estimation of the ATE in the single-time point setting
+where $Z=(W,A,Y)$ and $A$ is binary.
 
 \hypertarget{estimating-modified-treatment-policy-effects}{%
 \section{Estimating modified treatment policy
@@ -475,23 +498,23 @@ $outcome[[2]]
 A list of lists is returned with the names of the variables in \(H_t\)
 to be used for estimation of the outcome regression and the treatment
 mechanism at every time \(t\).  Notice that variables \(A_1\) and
-\(A_2\) are included as covariates for estimation of their own
-conditional probability. This is correct, and it is due to a
-particularity of our estimation procedure in which density ratios of
-treatment densities are estimated based on a classification trick
-using an auxiliary variable \(\Lambda\) as a pseudo outcome and the
-treatment as a predictor.
+\(A_2\) are included in the list of variables used for estimation of
+the treatment mechamism (\texttt{trt}). This is due to the fact that
+the nuisance parameter for the treatment mechanism is the density
+ratio $\r_t$, which is a function of \(A_1\) and \(A_2\).
 
-We now briefly describe how this density ratio estimation is done,
-although this process is fully automated and hidden from the software
-user. Specifically, the TMLE and SDR estimation methods require
-estimation of the ratio of the densities of $A_t^d$ and $A_t$,
-conditional on the history $H_t$. This is achieved through computing
-the odds in a classification problem in an augmented dataset with $2n$
-observations where the outcome is the auxiliary variable $\Lambda$
-(defined below) and the predictors are the variables $A_t$ and
-$H_t$. In the $2n$ augmented data set, the data structure at time
-\(t\) is redefined as
+The density ratio is estimated based on a classification trick using
+an auxiliary variable \(\Lambda\) as a pseudo outcome and the
+treatment as a predictor. We now briefly describe how this density
+ratio estimation is done; the process is fully automated and hidden
+from the software user. Specifically, the TMLE and SDR estimation
+methods require estimation of the ratio of the densities of $A_t^d$
+and $A_t$, conditional on the history $H_t$, defined as $\r_t$
+above. This is achieved through computing the odds in a classification
+problem in an augmented dataset with $2n$ observations where the
+outcome is the auxiliary variable $\Lambda$ (defined below) and the
+predictors are the variables $A_t$ and $H_t$. In the $2n$ augmented
+data set, the data structure at time \(t\) is redefined as
 
 \begin{equation}
 (H_{\lambda, i, t}, A_{\lambda, i, t}, \Lambda_{\lambda, i} : \lambda = 0, 1; i = 1, ..., n)
@@ -503,11 +526,17 @@ For all duplicated observations $\lambda\in\{0,1\}$ with the same $i$,
 $A_{\lambda, i, t}$ equals the observed exposure values $A_{i, t}$,
 whereas for $\lambda=1$, $A_{\lambda, i, t}$ equals the exposure
 values under the MTP \(d\), namely \(A^{d}_t\). The classification
-approach to density ratio estimation proceeds by estimating the conditional
-probability that $\Delta=1$ in this dataset, and dividing it by the
-corresponding estimate of the conditional probability that
-$\Delta=0$. An explanation of why this algorithm works may be found in
-our technical paper  \citep{diazNonparametricCausalEffects2020a}.
+approach to density ratio estimation proceeds by estimating the
+conditional probability that $\Delta=1$ in this dataset, and dividing
+it by the corresponding estimate of the conditional probability that
+$\Delta=0$. Specifically, denoting $\P^\lambda$ the distribution of
+the data in the augmented dataset, we have:
+\[\r_t(a_t, h_t) = \frac{\p^\lambda(a_t, h_t \mid \Lambda =
+    1)}{\p^\lambda(a_t, h_t \mid \Lambda =
+    0)}=\frac{\P^\lambda(\Lambda = 1\mid A_t=a_t,
+    H_t=h_t)}{\P^\lambda(\Lambda = 0\mid A_t=a_t, H_t=h_t)}.\] Further
+details on this algorithm may be found in our technical paper
+\citep{diazNonparametricCausalEffects2020a}.
 
 \hypertarget{creating-treatment-policies}{%
 \subsection{Creating treatment policies}\label{creating-treatment-policies}}
@@ -542,12 +571,13 @@ the package: \code{static_binary_on} which sets \(A_{i, t} = 1\), and
 
 An attractive property of multiply-robust estimators is that they can
 incorporate flexible machine-learning algorithms for the estimation of
-nuisance parameters while remaining \(\sqrt{n}\)-consistent. The super
-learner algorithm is an ensemble learner than incorporates a set of
-candidate models through a weighted convex-combination based on
-cross-validation \citep{laanSuperLearner2007}. Asymptotically, this
-weighted combination of models, called the meta-learner, will outperform
-any single one of its components.
+nuisance parameters $\Q_t$ and $\r_t$ while remaining
+\(\sqrt{n}\)-consistent. The super learner algorithm is an ensemble
+learner than incorporates a set of candidate models through a weighted
+convex-combination based on cross-validation
+\citep{laanSuperLearner2007}. Asymptotically, this weighted
+combination of models, called the meta-learner, will outperform any
+single one of its components.
 
 Our package uses the implementation of the super learner provided by
 the \pkg{sl3} package \citep{coyleSl3}. Analysts must create \pkg{sl3}
@@ -564,15 +594,17 @@ the \code{lrnrs_trt} argument.
 Candidate learners that rely on cross-validation
 for the tuning of hyper-parameters should support grouped data if used with \code{lrnrs_trt}. Because
 estimation of the treatment mechanism relies on the augmented \(2n\) duplicated
-data set, duplicated observations must be put into the same fold during sample-splitting. 
+data set, duplicated observations must be put into the same fold
+during sample-splitting. This is done automatically by the package.
 
 Users may install \pkg{sl3} from \url{https://github.com/tlverse/sl3}.
 Because \pkg{sl3} is not available for installation from a standard
-repository, it is not required to use \pkg{lmtp}. Instead, the
-\code{lrnrs_trt} and \code{lrnrs_outcomes} arguments can be set equal
-to \code{NULL} and nuisance parameters will be estimated using a
-generalized linear model (GLM) with the \code{glm} function from the
-\pkg{stats} package \citep{rcore}.
+repository at the time of writing of this manuscript, it is not
+required to use \pkg{lmtp}. Instead, the \code{lrnrs_trt} and
+\code{lrnrs_outcomes} arguments can be set equal to \code{NULL} and
+nuisance parameters will be estimated using a generalized linear model
+(GLM) with the \code{glm} function from the \pkg{stats} package
+\citep{rcore}.
 
 \hypertarget{additional-arguments}{%
 \subsection{Additional arguments}\label{additional-arguments}}
@@ -580,8 +612,10 @@ generalized linear model (GLM) with the \code{glm} function from the
 Sample-splitting and cross-fitting is used with all methods to avoid
 certain technical conditions that may not hold for machine learning
 estimators \citep{zhengCrossValidatedTargetedMinimumLossBased2011b,
-  chernozhukovDoubleDebiasedMachine2018}, and the number of folds can
-be set with the \code{folds} argument; the minimum number of allowed
+  chernozhukovDoubleDebiasedMachine2018}. Specifically, the data are
+split in $V$ volds and each nuisance parameter is estimated $V$ times,
+excluding data in one fold each time. The number of folds $V$ can be
+set with the \code{folds} argument; the minimum number of allowed
 folds is two.  If data has a hierarchical structure, the \code{id}
 argument is used to indicate the name of a variable in the data set
 indicating unique groups. These identifiers will be used for
@@ -594,16 +628,15 @@ the second index is the upper bound.
 \hypertarget{contrasts}{%
 \subsection{Contrasts}\label{contrasts}}
 
-In addition to the MTP effect, researchers may be interested in a
-comparison of the MTP effect and the outcome under the observed
-exposures, or other treatment policies. Contrasts between different
+In addition to estimating a single MTP effect, researchers may be
+interested in contrasting several MTPs. Contrasts between different
 policies are implemented in the \code{lmtp_contrast} function. Users
 may specify any number of objects returned by calls to
 \code{lmtp_tmle} or \code{lmtp_sdr} to be compared to a single a
 reference value or a single reference MTP, specified using the
 \code{ref} argument.  Depending on the outcome type, contrasts may be
 either additive (\code{type = "additive"}), an odds ratio (\code{type
-  = "or"}), or the relative risk (\code{type = "rr"})
+  = "or"}), or the relative risk (\code{type = "rr"}).
 
 \hypertarget{examples}{%
 \subsection{Examples}\label{examples}}
